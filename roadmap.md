@@ -13,3 +13,7 @@
 - [ ] XRPL module events
 - [ ] Game scenes behind login
 - [ ] Add the Solana treasury key + RPC key as secrets before server-signed payouts
+
+## XRPL login
+- [x] Xaman (QR + deep link), Joey (WalletConnect), GemWallet
+- [ ] Add XAMAN_API_KEY / XAMAN_API_SECRET secrets and VITE_REOWN_PROJECT_ID (blocked: needs your developer accounts)

@@ -24,8 +24,8 @@ describe("xrpl login", () => {
   });
 
   it("xaman sign-in bound to token", async () => {
-    process.env.XAMAN_API_KEY = "k";
-    process.env.XAMAN_API_SECRET = "s";
+    process.env["XAMAN_API_KEY"] = "k";
+    process.env["XAMAN_API_SECRET"] = "s";
     const signed = { meta: { signed: true }, response: { account: "rAbc" }, custom_meta: { blob: { token: "t1" } } };
     expect(await verifyXamanSignIn("u", "t1", fakeFetch(signed))).toBe("rAbc");
     expect(await verifyXamanSignIn("u", "t2", fakeFetch(signed))).toBeNull();

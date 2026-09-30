@@ -142,7 +142,7 @@ export async function connectJoey(onPrompt?: (p: XrplQrPrompt) => void) {
   });
   if (uri) onPrompt?.({ wallet: "joey", qrValue: uri, deeplink: `${xrplChainConfig.joeyDeeplink}${encodeURIComponent(uri)}` });
   const session = await approval();
-  const account = session.namespaces.xrpl?.accounts[0];
+  const account = session.namespaces["xrpl"]?.accounts[0];
   if (!account) throw new Error("Joey returned no XRPL account");
   wc = { client, topic: session.topic };
   return { address: account.split(":").pop()! };
@@ -180,7 +180,7 @@ export function verifyXrplSignedTx(address: string, message: string, blob: strin
       TxnSignature?: string;
       Memos?: { Memo: { MemoType?: string; MemoData?: string } }[];
     };
-    if (tx.TransactionType !== "AccountSet" || tx.Account !== address) return false;
+    if (tx["TransactionType"] !== "AccountSet" || tx.Account !== address) return false;
     if (!tx.SigningPubKey || !tx.TxnSignature) return false;
     if (deriveAddress(tx.SigningPubKey) !== address) return false;
     const memo = tx.Memos?.find((m) => m.Memo.MemoType && fromHex(m.Memo.MemoType) === "login");
