@@ -1,4 +1,4 @@
-import { verifyHiveSignature } from "@/lib/chains/modules/hive";
+import { verifyHiveSignature } from "@/lib/chains/modules/hive/events/login/action";
 import type { WalletLogin } from "@/features/types/auth.types";
 
 /** Server: verify a Hive login via the module login event. */

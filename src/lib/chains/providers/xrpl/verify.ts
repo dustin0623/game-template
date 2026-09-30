@@ -1,4 +1,4 @@
-import { verifyXrplSignature } from "@/lib/chains/modules/xrpl";
+import { verifyXrplSignature } from "@/lib/chains/modules/xrpl/events/login/action";
 import type { WalletLogin } from "@/features/types/auth.types";
 
 /** Server: verify an XRPL login via the module login event. */

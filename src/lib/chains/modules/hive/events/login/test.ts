@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { PrivateKey, cryptoUtils } from "@hiveio/dhive";
-import { verifyHiveSignature, recoverHivePublicKey } from "./verify";
+import { verifyHiveSignature, recoverHivePublicKey } from "./action";
 import type { HiveClient } from "../../client";
 
 const message = "Sign in to the game\nNonce: abc123";

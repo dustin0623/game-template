@@ -1429,7 +1429,7 @@ Preserve the architecture unless the user explicitly requests an architectural c
 <!-- LOVABLE:END -->
 
 # Auth decisions
-- Wallet signing and signature verification live in src/lib/chains/modules/{chain}/events/login/ (sign.ts, verify.ts, action.ts); src/lib/chains/providers/{hive,solana,xrpl}/{sign,verify,index}.ts delegate to that event, providers also own challenge, player lookup and email auth (why: one place per chain owns all protocol/crypto/RPC detail).
+- Wallet signing and signature verification live in src/lib/chains/modules/{chain}/events/login/action.ts (sign + verify); src/lib/chains/providers/{hive,solana,xrpl}/{sign,verify,index}.ts delegate to that event, providers also own challenge, player lookup and email auth (why: one place per chain owns all protocol/crypto/RPC detail).
 - Auth lives in src/lib/chains/providers/{email}; wallet login = HMAC-signed challenge → wallet signature via module signer → server verify via module verifier (why: stateless, no private keys ever requested).
 - Hive login uses hivexph-sdk (Keychain client for signing, shared rpc client for account keys) plus @noble/secp256k1 for key recovery; @hiveio/dhive is a devDependency used only to generate reference signatures in tests (why: one SDK for all Hive traffic).
 - Enabled chain set via config.auth.chain (single value) — enforces at most one chain provider.
