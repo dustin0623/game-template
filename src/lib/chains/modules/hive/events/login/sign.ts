@@ -1,4 +1,4 @@
-import { getHiveClient } from "../client";
+import { getHiveClient } from "../../client";
 
 /**
  * Browser: ask Hive Keychain to sign the login challenge.

@@ -2,21 +2,18 @@ import { config } from "@/lib/config/config";
 import type { WalletLogin } from "@/features/types/auth.types";
 import { playerRepository, toPlayer } from "@/lib/database/mock/repositories/player.repository";
 import { consumeChallenge } from "./challenge.server";
-import { verifySolanaSignature } from "@/lib/chains/modules/solana";
-import { verifyHiveSignature } from "@/lib/chains/modules/hive";
-import { verifyXrplSignature } from "@/lib/chains/modules/xrpl";
+import { verify as verifySolana } from "./solana/verify";
+import { verify as verifyHive } from "./hive/verify";
+import { verify as verifyXrpl } from "./xrpl/verify";
+
+const verifiers = { solana: verifySolana, hive: verifyHive, xrpl: verifyXrpl } as const;
 
 /** Server: verify a signed challenge and resolve/create the player. */
 export async function loginWithWallet(input: WalletLogin) {
   if (config.auth.chain !== input.chain) throw new Error("Chain not enabled");
   await consumeChallenge(input.token, input.chain, input.address, input.message);
 
-  let ok = false;
-  if (input.chain === "solana") ok = verifySolanaSignature(input.address, input.message, input.signature);
-  if (input.chain === "hive") ok = await verifyHiveSignature(input.address, input.message, input.signature);
-  if (input.chain === "xrpl")
-    ok = !!input.publicKey && verifyXrplSignature(input.address, input.publicKey, input.message, input.signature);
-  if (!ok) throw new Error("Signature verification failed");
+  if (!(await verifiers[input.chain](input))) throw new Error("Signature verification failed");
 
   const existing = await playerRepository.findByChain(input.chain, input.address);
   const record =
