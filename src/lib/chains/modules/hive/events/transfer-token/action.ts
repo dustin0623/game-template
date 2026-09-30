@@ -29,6 +29,10 @@ export const TransferTokenInput = z.object({
 
 export type TransferTokenInput = z.input<typeof TransferTokenInput>;
 
+/** HIVE/HBD are Layer 1 assets; any other symbol rides Hive Engine (Layer 2). */
+const isNativeSymbol = (symbol: string) => symbol === "HIVE" || symbol === "HBD";
+
+
 export type TransferResult = {
   transactionId: string | null;
   layer: 1 | 2;
@@ -47,7 +51,7 @@ export async function transferToken(input: TransferTokenInput): Promise<HiveActi
 
   const { signer, from, alias, to, amount, symbol, action, metadata } = parsed.data;
   const hive = parsed.data.client ?? getHiveClient();
-  const layer: 1 | 2 = isNativeHiveSymbol(symbol) ? 1 : 2;
+  const layer: 1 | 2 = isNativeSymbol(symbol) ? 1 : 2;
 
   try {
     if (signer === "keychain") {
