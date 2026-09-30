@@ -1,2 +1,2 @@
 /** Public API of the XRPL chain module. */
-export { connectXrpl, signXrplLogin, verifyXrplSignature } from "./events/login/action";
+export * from "./events/login/action";
