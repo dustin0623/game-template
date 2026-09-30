@@ -43,12 +43,14 @@ const encode = (message: string) => new TextEncoder().encode(message);
 
 /* ------------------------------------------------- injected wallet adapters */
 
-type InjectedProvider = {
+export type InjectedProvider = {
   isPhantom?: boolean;
   isBackpack?: boolean;
   publicKey?: { toString(): string } | null;
   connect: (opts?: { onlyIfTrusted?: boolean }) => Promise<{ publicKey?: { toString(): string } } | void>;
   signMessage: (msg: Uint8Array, enc?: "utf8") => Promise<SignatureLike>;
+  /** Present on Phantom, Solflare and Backpack; used for transfers. */
+  signAndSendTransaction?: (tx: unknown) => Promise<{ signature: string }>;
 };
 
 type SolanaWindow = {
