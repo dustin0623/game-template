@@ -41,8 +41,13 @@ export async function validatePayment(
   const { transactionId, expected } = parsed.data;
   const hive = parsed.data.client ?? getHiveClient();
 
+  // Drop undefined keys: the SDK's expectation type has no optional-undefined members.
+  const cleaned = expected
+    ? (Object.fromEntries(Object.entries(expected).filter(([, v]) => v !== undefined)) as PaymentExpectation)
+    : undefined;
+
   try {
-    return ok(await hive.payments.validate({ transactionId, ...(expected ? { expected } : {}) }));
+    return ok(await hive.payments.validate({ transactionId, ...(cleaned ? { expected: cleaned } : {}) }));
   } catch (error) {
     return fail(error);
   }
