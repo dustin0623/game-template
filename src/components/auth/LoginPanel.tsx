@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { config } from "@/lib/config/config";
-import { emailLoginFn, emailSignupFn, walletLogin } from "@/lib/chains/providers";
+import { emailLoginFn, emailSignupFn, walletLogin, SOLANA_WALLETS } from "@/lib/chains/providers";
 import { useAuthStore } from "@/features/stores/auth.store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-const CHAIN_LABEL = { solana: "Phantom (Solana)", hive: "Hive Keychain", xrpl: "GemWallet (XRPL)" } as const;
+const CHAIN_LABEL = { solana: "Solana wallet", hive: "Hive Keychain", xrpl: "GemWallet (XRPL)" } as const;
 
 export function LoginPanel() {
   const { player, setPlayer, logout } = useAuthStore();
@@ -79,7 +79,25 @@ export function LoginPanel() {
         </div>
       )}
 
-      {chain && (
+      {chain === "solana" && (
+        <div className="space-y-2">
+          <p className="text-xs text-muted-foreground">Choose your wallet</p>
+          <div className="grid grid-cols-2 gap-2">
+            {SOLANA_WALLETS.map((w) => (
+              <Button
+                key={w.id}
+                variant="secondary"
+                disabled={busy}
+                onClick={() => run(() => walletLogin("solana", { solanaWallet: w.id }))}
+              >
+                {w.label}
+              </Button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {chain && chain !== "solana" && (
         <div className="space-y-3">
           {chain === "hive" && (
             <div className="space-y-1">
@@ -87,7 +105,12 @@ export function LoginPanel() {
               <Input id="hive" placeholder="username" value={hiveUser} onChange={(e) => setHiveUser(e.target.value)} />
             </div>
           )}
-          <Button variant="secondary" className="w-full" disabled={busy} onClick={() => run(() => walletLogin(chain, hiveUser))}>
+          <Button
+            variant="secondary"
+            className="w-full"
+            disabled={busy}
+            onClick={() => run(() => walletLogin(chain, { hiveUsername: hiveUser }))}
+          >
             Sign in with {CHAIN_LABEL[chain]}
           </Button>
         </div>

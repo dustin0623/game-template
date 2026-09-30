@@ -39,6 +39,14 @@ export const hiveChainConfig = {
   },
 } as const;
 
+export const solanaChainConfig = {
+  /** Shown by MetaMask (and other Wallet Standard wallets) on the connect prompt. */
+  dappName: "Lovable Game",
+  /** Wallets offered for Solana sign-in, in display order. */
+  wallets: ["phantom", "solflare", "backpack", "metamask"],
+} as const;
+
 export const chainsConfig = {
   hive: hiveChainConfig,
+  solana: solanaChainConfig,
 } as const;
