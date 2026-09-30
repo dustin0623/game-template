@@ -4,7 +4,7 @@ import { playerRepository, toPlayer } from "@/lib/database/mock/repositories/pla
 import { consumeChallenge } from "./challenge.server";
 import { verifySolanaSignature } from "./solana/signature";
 import { verifyHiveSignature } from "./hive/signature";
-import { hiveChainConfig } from "@/lib/chains/modules/config";
+import { getHiveClient } from "@/lib/chains/modules/hive/client";
 import { verifyXrplSignature } from "./xrpl/signature";
 
 /** Server: verify a signed challenge and resolve/create the player. */
@@ -15,7 +15,7 @@ export async function loginWithWallet(input: WalletLogin) {
   let ok = false;
   if (input.chain === "solana") ok = verifySolanaSignature(input.address, input.message, input.signature);
   if (input.chain === "hive")
-    ok = await verifyHiveSignature(hiveChainConfig.endpoint, input.address, input.message, input.signature);
+    ok = await verifyHiveSignature(getHiveClient().rpc.endpoint, input.address, input.message, input.signature);
   if (input.chain === "xrpl") ok = !!input.publicKey && verifyXrplSignature(input.address, input.publicKey, input.message, input.signature);
   if (!ok) throw new Error("Signature verification failed");
 
