@@ -18,7 +18,7 @@ const tx = (overrides: { meta?: Record<string, unknown> } = {}) => ({
     logMessages: ['Program log: Memo (len 20): "{"action":"deposit"}"'],
     preTokenBalances: [],
     postTokenBalances: [],
-    ...(overrides.meta as object),
+    ...overrides.meta,
   },
   transaction: {
     message: {
