@@ -1,6 +1,8 @@
 /**
- * Shared application configuration (frontend + server).
- * Never put secrets here.
+ * Shared APPLICATION configuration (frontend + server).
+ *
+ * Chain-specific settings (endpoints, symbols, env var names) live in
+ * `src/lib/chains/modules/config.ts`. Never put secrets in either file.
  */
 export type ChainProvider = "solana" | "hive" | "xrpl";
 
@@ -18,8 +20,5 @@ export const config = {
     chain: "hive" as ChainProvider | null,
     /** Challenge lifetime for wallet signatures. */
     challengeTtlMs: 5 * 60 * 1000,
-  },
-  chains: {
-    hive: { rpc: "https://api.hive.blog" },
   },
 } as const;

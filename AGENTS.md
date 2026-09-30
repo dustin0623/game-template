@@ -1,3 +1,4 @@
+<!-- LOVABLE:BEGIN -->
 # AGENTS.md
 
 ## Project Instructions
@@ -1425,7 +1426,15 @@ Fixtures
 If the requested feature does not clearly fit an existing layer, inspect the architecture document and existing implementation patterns before introducing a new architectural layer.
 
 Preserve the architecture unless the user explicitly requests an architectural change.
+<!-- LOVABLE:END -->
+
 # Auth decisions
 - Auth lives in src/lib/chains/providers/{email,solana,hive,xrpl}; wallet login = HMAC-signed challenge → wallet signature → server verify (why: stateless, no private keys ever requested).
 - Enabled chain set via config.auth.chain (single value) — enforces at most one chain provider.
 - Players stored in in-memory mock repository until MongoDB is wired (why: no DB configured yet).
+
+# Chain module decisions
+- Chain-specific settings (endpoints, symbols, application id, signing env var NAMES) live in src/lib/chains/modules/config.ts; src/lib/config/config.ts is app config only.
+- Hive operations use hivexph-sdk via one shared client in src/lib/chains/modules/hive/client.ts (why: single RPC engine, lazy server-side key resolution).
+- Chain events return HiveActionResult instead of throwing (why: the worker must record ERROR outcomes, never lose failures).
+- Chain event actions accept an optional `client` for injection (why: testable without real blockchain infrastructure).
