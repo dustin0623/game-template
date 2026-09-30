@@ -4,10 +4,10 @@
  * The endpoint is provider-agnostic: Helius, QuickNode, Alchemy, Triton, or a
  * private validator all speak the same JSON-RPC. Resolution order:
  *
- *   1. SOLANA_RPC_ENDPOINT — a full URL (keys may be embedded as a query param)
- *   2. SOLANA_RPC_ENDPOINT + SOLANA_RPC_API_KEY — key appended as `?api-key=`
- *   3. HELIUS_API_KEY      — Helius mainnet URL built automatically
- *   4. the public mainnet-beta endpoint (rate limited; development only)
+ *   1. SOLANA_RPC_ENDPOINT — a private node URL (key may be embedded as a
+ *      query param, or SOLANA_PRIVATE_NODE_API_KEY is appended as `?api-key=`)
+ *   2. SOLANA_PRIVATE_NODE_API_KEY — appended to `privateMainnetUrl`
+ *   3. publicMainnetUrl — the public endpoint (rate limited; development only)
  *
  * The network is always mainnet — devnet and testnet are never used.
  */
@@ -30,14 +30,13 @@ function withApiKey(endpoint: string, apiKey?: string): string {
   return `${endpoint}${endpoint.includes("?") ? "&" : "?"}api-key=${apiKey}`;
 }
 
-/** Resolve the mainnet RPC URL for whichever provider is configured. */
+/** Resolve the mainnet RPC URL: private node first, public endpoint last. */
 export function resolveSolanaEndpoint(): string {
   const custom = env(chainEnv.solana.rpcEndpoint);
-  const apiKey = env(chainEnv.solana.rpcApiKey);
+  const apiKey = env(chainEnv.solana.privateNodeApiKey);
   if (custom) return withApiKey(custom, apiKey);
 
-  const helius = env(chainEnv.solana.heliusApiKey) ?? apiKey;
-  if (helius) return `${solanaChainConfig.heliusMainnetUrl}/?api-key=${helius}`;
+  if (apiKey) return withApiKey(solanaChainConfig.privateMainnetUrl, apiKey);
 
   return solanaChainConfig.publicMainnetUrl;
 }

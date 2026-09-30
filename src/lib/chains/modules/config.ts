@@ -22,10 +22,8 @@ export const chainEnv = {
   solana: {
     /** Full mainnet RPC URL for any provider (Helius, QuickNode, Alchemy, ...). */
     rpcEndpoint: "SOLANA_RPC_ENDPOINT",
-    /** Generic API key appended to the endpoint when it carries none. */
-    rpcApiKey: "SOLANA_RPC_API_KEY",
-    /** Helius key: the mainnet URL is built from it automatically. */
-    heliusApiKey: "HELIUS_API_KEY",
+    /** API key for the private node (Helius or another RPC provider). */
+    privateNodeApiKey: "SOLANA_PRIVATE_NODE_API_KEY",
     /** Treasury wallet used for server-signed payouts. */
     treasuryAddress: "SOLANA_TREASURY_ADDRESS",
     treasurySecretKey: "SOLANA_TREASURY_SECRET_KEY",
@@ -58,8 +56,9 @@ export const solanaChainConfig = {
   /** Mainnet only — devnet and testnet are never used. */
   network: "mainnet-beta",
   commitment: "confirmed",
-  /** Built from `chainEnv.solana.heliusApiKey` when no full endpoint is set. */
-  heliusMainnetUrl: "https://mainnet.helius-rpc.com",
+  /** Private (paid) node: Helius, QuickNode, Alchemy, ... — activated by
+   * `chainEnv.solana.privateNodeApiKey`. */
+  privateMainnetUrl: "https://mainnet.helius-rpc.com",
   /** Last-resort public endpoint (heavily rate limited). */
   publicMainnetUrl: "https://api.mainnet-beta.solana.com",
   /** Backend signing wallets, referenced by alias. */
