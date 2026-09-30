@@ -7,7 +7,7 @@ const SIG =
 const PAYER = "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM";
 const TREASURY = "3n1vTrEaSuRy4KxWqLmNoPqRsTuVwXyZaBcDeFgHiJkL";
 
-const tx = (overrides: Record<string, unknown> = {}) => ({
+const tx = (overrides: { meta?: Record<string, unknown> } = {}) => ({
   slot: 1,
   blockTime: 1_759_000_000,
   meta: {
