@@ -1,3 +1,4 @@
+<!-- LOVABLE:BEGIN -->
 # AGENTS.md
 
 ## Project Instructions
@@ -1425,6 +1426,8 @@ Fixtures
 If the requested feature does not clearly fit an existing layer, inspect the architecture document and existing implementation patterns before introducing a new architectural layer.
 
 Preserve the architecture unless the user explicitly requests an architectural change.
+<!-- LOVABLE:END -->
+
 # Auth decisions
 - Auth lives in src/lib/chains/providers/{email,solana,hive,xrpl}; wallet login = HMAC-signed challenge → wallet signature → server verify (why: stateless, no private keys ever requested).
 - Enabled chain set via config.auth.chain (single value) — enforces at most one chain provider.
