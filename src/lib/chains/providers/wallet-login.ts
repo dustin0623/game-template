@@ -4,6 +4,7 @@ import { playerRepository, toPlayer } from "@/lib/database/mock/repositories/pla
 import { consumeChallenge } from "./challenge.server";
 import { verifySolanaSignature } from "./solana/signature";
 import { verifyHiveSignature } from "./hive/signature";
+import { hiveChainConfig } from "@/lib/chains/modules/config";
 import { verifyXrplSignature } from "./xrpl/signature";
 
 /** Server: verify a signed challenge and resolve/create the player. */
