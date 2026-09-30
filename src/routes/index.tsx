@@ -1,13 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { LoginPanel } from "@/components/auth/LoginPanel";
+import { LoginDialog } from "@/components/auth/LoginDialog";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Sign in — Game" },
-      { name: "description", content: "Sign in with email or your Solana, Hive or XRPL wallet." },
-      { property: "og:title", content: "Sign in — Game" },
-      { property: "og:description", content: "Sign in with email or your Solana, Hive or XRPL wallet." },
+      { title: "Enter the Game — Home" },
+      { name: "description", content: "A browser adventure. Log in with email or your Solana, Hive or XRPL wallet." },
+      { property: "og:title", content: "Enter the Game — Home" },
+      { property: "og:description", content: "A browser adventure. Log in with email or your Solana, Hive or XRPL wallet." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -17,11 +17,21 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="w-full max-w-sm rounded-xl border border-border bg-card p-8 shadow-sm">
-        <h1 className="mb-6 text-center text-2xl font-bold tracking-tight text-card-foreground">Enter the Game</h1>
-        <LoginPanel />
-      </div>
+    <main className="min-h-screen bg-background">
+      <header className="flex items-center justify-between px-6 py-5">
+        <span className="text-lg font-bold tracking-tight text-foreground">Enter the Game</span>
+        <LoginDialog />
+      </header>
+
+      <section className="mx-auto flex max-w-2xl flex-col items-center gap-6 px-6 py-24 text-center">
+        <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+          A browser adventure, built to grow
+        </h1>
+        <p className="text-lg text-muted-foreground">
+          Explore, fight, craft and trade. Log in to start your run.
+        </p>
+        <LoginDialog />
+      </section>
     </main>
   );
 }
