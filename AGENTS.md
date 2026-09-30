@@ -1434,7 +1434,7 @@ Preserve the architecture unless the user explicitly requests an architectural c
 - Players stored in in-memory mock repository until MongoDB is wired (why: no DB configured yet).
 
 # Chain module decisions
-- Chain-specific settings (endpoints, symbols, application id, signing env var NAMES) live in src/lib/chains/modules/config.ts; src/lib/config/config.ts is app config only.
+- Chain-specific settings (endpoints, application id, signing env var NAMES) live in src/lib/chains/modules/config.ts; src/lib/config/config.ts is app config only. The SDK's own defaults (RPC/beacon URLs) and token symbols/precisions are NOT duplicated there — pass tokens directly in each action file and only add config entries to override the SDK.
 - Hive operations use hivexph-sdk via one shared client in src/lib/chains/modules/hive/client.ts (why: single RPC engine, lazy server-side key resolution).
 - Chain events return HiveActionResult instead of throwing (why: the worker must record ERROR outcomes, never lose failures).
 - Chain event actions accept an optional `client` for injection (why: testable without real blockchain infrastructure).

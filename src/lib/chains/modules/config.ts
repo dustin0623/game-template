@@ -30,16 +30,6 @@ export const hiveChainConfig = {
   /** custom_json id used for this app's standardized game actions. The SDK
    * requires one — no default exists there. */
   applicationId: "lovable-game",
-  /** Layer 1 assets. */
-  native: {
-    symbols: ["HIVE", "HBD"] as const,
-    precision: 3,
-  },
-  /** Layer 2 (Hive Engine) game token. */
-  engine: {
-    symbol: "SCRAP",
-    precision: 3,
-  },
   /** Backend signing accounts, referenced by alias. */
   accounts: {
     treasury: {
@@ -49,13 +39,6 @@ export const hiveChainConfig = {
   },
 } as const;
 
-export type HiveNativeSymbol = (typeof hiveChainConfig.native.symbols)[number];
-
 export const chainsConfig = {
   hive: hiveChainConfig,
 } as const;
-
-/** True when `symbol` is a Layer 1 Hive asset. */
-export function isNativeHiveSymbol(symbol: string): symbol is HiveNativeSymbol {
-  return (hiveChainConfig.native.symbols as readonly string[]).includes(symbol);
-}

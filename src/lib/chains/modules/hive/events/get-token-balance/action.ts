@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { getHiveClient, type HiveClient } from "../../client";
-import { isNativeHiveSymbol } from "../../../config";
 import { HiveAccountSchema, SymbolSchema, ok, fail, type HiveActionResult } from "../../types";
+
 
 export const GetTokenBalanceInput = z.object({
   account: HiveAccountSchema,
@@ -11,6 +11,10 @@ export const GetTokenBalanceInput = z.object({
 });
 
 export type GetTokenBalanceInput = z.input<typeof GetTokenBalanceInput>;
+
+/** HIVE/HBD are Layer 1 assets; any other symbol rides Hive Engine (Layer 2). */
+const isNativeSymbol = (symbol: string) => symbol === "HIVE" || symbol === "HBD";
+
 
 export type TokenBalance = {
   account: string;
@@ -34,7 +38,7 @@ export async function getTokenBalance(input: GetTokenBalanceInput): Promise<Hive
   const hive = parsed.data.client ?? getHiveClient();
 
   try {
-    if (isNativeHiveSymbol(symbol)) {
+    if (isNativeSymbol(symbol)) {
       const rows = await hive.rpc.call<HiveAccountRow[]>("condenser_api.get_accounts", [[account]]);
       const row = rows?.[0];
       if (!row) return fail(new Error(`Hive account "${account}" not found`));
