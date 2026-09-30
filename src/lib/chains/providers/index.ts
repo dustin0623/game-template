@@ -1,9 +1,9 @@
-/** Browser-facing auth API. Wallet adapters + server functions. */
+/** Browser-facing auth API. Orchestrates the chain modules + server functions. */
 import type { ChainProvider } from "@/lib/config/config";
 import { walletChallengeFn, walletLoginFn, emailLoginFn, emailSignupFn } from "./auth.functions";
-import { connectSolana, signSolana } from "./solana/wallet";
-import { signHive } from "./hive/wallet";
-import { connectXrpl, signXrpl } from "./xrpl/wallet";
+import { connectSolana, signSolanaLogin } from "@/lib/chains/modules/solana";
+import { signHiveLogin } from "@/lib/chains/modules/hive";
+import { connectXrpl, signXrplLogin } from "@/lib/chains/modules/xrpl";
 
 export { emailLoginFn, emailSignupFn };
 
@@ -19,8 +19,9 @@ export async function walletLogin(chain: ChainProvider, hiveUsername?: string) {
   }
 
   const { message, token } = await walletChallengeFn({ data: { chain, address } });
-  const { signature } =
-    chain === "solana" ? await signSolana(message) : chain === "xrpl" ? await signXrpl(message) : await signHive(address, message);
+  const sign =
+    chain === "solana" ? signSolanaLogin : chain === "xrpl" ? signXrplLogin : signHiveLogin;
+  const { signature } = await sign(address, message);
 
   return walletLoginFn({ data: { chain, address, message, token, signature, publicKey } });
 }
