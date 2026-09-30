@@ -22,10 +22,13 @@ export const chainEnv = {
 } as const;
 
 export const hiveChainConfig = {
-  /** Default RPC node. Beacon discovery handles failover from here. */
-  endpoint: "https://api.hive.blog",
-  beaconUrl: "https://beacon.peakd.com/api/nodes",
-  /** custom_json id used for this app's standardized game actions. */
+  /**
+   * RPC endpoint / beacon URL: the SDK ships sane defaults
+   * (https://api.hive.blog + PeakD beacon). Only set these when overriding.
+   * `chainEnv.hive.endpoint` names the env var for a runtime override.
+   */
+  /** custom_json id used for this app's standardized game actions. The SDK
+   * requires one — no default exists there. */
   applicationId: "lovable-game",
   /** Layer 1 assets. */
   native: {
