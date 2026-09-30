@@ -41,7 +41,7 @@ export async function broadcastCustomJson(
       action,
       metadata: metadata ?? null,
       authority,
-      message,
+      ...(message ? { message } : {}),
     });
     return ok({ transactionId: result.transactionId, id, action });
   } catch (error) {

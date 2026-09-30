@@ -28,7 +28,9 @@ export async function getTransaction(
   const hive = parsed.data.client ?? getHiveClient();
 
   try {
-    return ok(await hive.reader.transaction({ transactionId, id, actions }));
+    return ok(
+      await hive.reader.transaction({ transactionId, ...(id ? { id } : {}), ...(actions ? { actions } : {}) }),
+    );
   } catch (error) {
     return fail(error);
   }

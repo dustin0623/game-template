@@ -42,7 +42,7 @@ export async function validatePayment(
   const hive = parsed.data.client ?? getHiveClient();
 
   try {
-    return ok(await hive.payments.validate({ transactionId, expected }));
+    return ok(await hive.payments.validate({ transactionId, ...(expected ? { expected } : {}) }));
   } catch (error) {
     return fail(error);
   }

@@ -34,5 +34,6 @@ export function ok<T>(data: T): HiveActionResult<T> {
 
 export function fail<T = never>(error: unknown): HiveActionResult<T> {
   const e = error as { message?: string; code?: string };
-  return { ok: false, error: e?.message ?? String(error), code: e?.code };
+  const message = e?.message ?? String(error);
+  return e?.code ? { ok: false, error: message, code: e.code } : { ok: false, error: message };
 }

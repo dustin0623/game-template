@@ -39,7 +39,7 @@ export async function getTokenBalance(input: GetTokenBalanceInput): Promise<Hive
       const row = rows?.[0];
       if (!row) return fail(new Error(`Hive account "${account}" not found`));
       const asset = symbol === "HIVE" ? row.balance : row.hbd_balance;
-      return ok({ account, symbol, balance: asset.split(" ")[0], stake: null, layer: 1 });
+      return ok({ account, symbol, balance: asset?.split(" ")[0] ?? "0", stake: null, layer: 1 });
     }
 
     const row = await hive.payments.engineRpc.findOne<EngineBalanceRow>({
