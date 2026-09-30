@@ -14,7 +14,8 @@ export async function loginWithWallet(input: WalletLogin) {
 
   let ok = false;
   if (input.chain === "solana") ok = verifySolanaSignature(input.address, input.message, input.signature);
-  if (input.chain === "hive") ok = await verifyHiveSignature(config.chains.hive.rpc, input.address, input.message, input.signature);
+  if (input.chain === "hive")
+    ok = await verifyHiveSignature(hiveChainConfig.endpoint, input.address, input.message, input.signature);
   if (input.chain === "xrpl") ok = !!input.publicKey && verifyXrplSignature(input.address, input.publicKey, input.message, input.signature);
   if (!ok) throw new Error("Signature verification failed");
 
