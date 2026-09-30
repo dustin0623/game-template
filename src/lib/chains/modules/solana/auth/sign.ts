@@ -19,8 +19,8 @@ export async function connectSolana() {
   return { address: res.publicKey.toString() };
 }
 
-/** Browser: sign a message, returning a base58 signature. */
-export async function signSolana(message: string) {
+/** Browser: sign the login challenge, returning a base58 signature. */
+export async function signSolanaLogin(_address: string, message: string) {
   const { signature } = await provider().signMessage(new TextEncoder().encode(message), "utf8");
   return { signature: bs58.encode(signature) };
 }

@@ -2,11 +2,13 @@ import { describe, expect, it } from "vitest";
 import nacl from "tweetnacl";
 import bs58 from "bs58";
 import { deriveKeypair, generateSeed, sign, deriveAddress } from "ripple-keypairs";
-import { PrivateKey } from "@hiveio/dhive";
-import { cryptoUtils } from "@hiveio/dhive";
-import { verifySolanaSignature } from "./solana/signature";
-import { verifyXrplSignature } from "./xrpl/signature";
-import { recoverHivePublicKey } from "./hive/signature";
+// dhive is a dev-only dependency: used here to produce reference Hive
+// signatures so the SDK-based verifier can be checked against a known-good
+// implementation. Application code never imports it.
+import { PrivateKey, cryptoUtils } from "@hiveio/dhive";
+import { verifySolanaSignature } from "@/lib/chains/modules/solana";
+import { verifyXrplSignature } from "@/lib/chains/modules/xrpl";
+import { recoverHivePublicKey } from "@/lib/chains/modules/hive";
 import { hashPassword, verifyPassword } from "./email/password";
 import { createChallenge, consumeChallenge } from "./challenge.server";
 
@@ -40,6 +42,8 @@ describe("auth providers", () => {
     const key = PrivateKey.fromSeed("test-seed");
     const sig = key.sign(cryptoUtils.sha256(msg)).toString();
     expect(recoverHivePublicKey(msg, sig)).toBe(key.createPublic().toString());
+    expect(recoverHivePublicKey(msg + "x", sig)).not.toBe(key.createPublic().toString());
+    expect(recoverHivePublicKey(msg, "not-a-signature")).toBeNull();
   });
 
   it("challenge is single-use and bound", async () => {

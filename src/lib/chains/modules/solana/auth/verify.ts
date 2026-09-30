@@ -1,7 +1,7 @@
 import nacl from "tweetnacl";
 import bs58 from "bs58";
 
-/** Verify an ed25519 signature (base58) from a Solana wallet over a UTF-8 message. */
+/** Server: verify an ed25519 signature (base58) from a Solana wallet. */
 export function verifySolanaSignature(address: string, message: string, signatureB58: string) {
   try {
     return nacl.sign.detached.verify(

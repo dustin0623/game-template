@@ -8,7 +8,8 @@ export async function connectXrpl() {
   return { address: res.result.address, publicKey: res.result.publicKey };
 }
 
-export async function signXrpl(message: string) {
+/** Browser: sign the login challenge with GemWallet. */
+export async function signXrplLogin(_address: string, message: string) {
   const gem = await import("@gemwallet/api");
   const res = await gem.signMessage(message);
   if (!res.result?.signedMessage) throw new Error("Signing cancelled");
