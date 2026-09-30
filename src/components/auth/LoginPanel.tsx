@@ -1,12 +1,20 @@
 import { useState } from "react";
+import { QRCodeSVG } from "qrcode.react";
 import { config } from "@/lib/config/config";
-import { emailLoginFn, emailSignupFn, walletLogin, SOLANA_WALLETS } from "@/lib/chains/providers";
+import {
+  emailLoginFn,
+  emailSignupFn,
+  walletLogin,
+  SOLANA_WALLETS,
+  XRPL_WALLETS,
+  type XrplQrPrompt,
+} from "@/lib/chains/providers";
 import { useAuthStore } from "@/features/stores/auth.store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-const CHAIN_LABEL = { solana: "Solana wallet", hive: "Hive Keychain", xrpl: "GemWallet (XRPL)" } as const;
+const CHAIN_LABEL = { solana: "Solana wallet", hive: "Hive Keychain", xrpl: "XRPL wallet" } as const;
 
 export function LoginPanel() {
   const { player, setPlayer, logout } = useAuthStore();
@@ -16,6 +24,7 @@ export function LoginPanel() {
   const [hiveUser, setHiveUser] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [prompt, setPrompt] = useState<XrplQrPrompt | null>(null);
 
   const run = async (fn: () => Promise<Parameters<typeof setPlayer>[0]>) => {
     setBusy(true);
@@ -97,14 +106,49 @@ export function LoginPanel() {
         </div>
       )}
 
-      {chain && chain !== "solana" && (
-        <div className="space-y-3">
-          {chain === "hive" && (
-            <div className="space-y-1">
-              <Label htmlFor="hive">Hive username</Label>
-              <Input id="hive" placeholder="username" value={hiveUser} onChange={(e) => setHiveUser(e.target.value)} />
+      {chain === "xrpl" && (
+        <div className="space-y-2">
+          <p className="text-xs text-muted-foreground">Choose your wallet</p>
+          <div className="grid grid-cols-3 gap-2">
+            {XRPL_WALLETS.map((w) => (
+              <Button
+                key={w.id}
+                variant="secondary"
+                disabled={busy}
+                onClick={() =>
+                  run(() => walletLogin("xrpl", { xrplWallet: w.id, onPrompt: setPrompt })).finally(() => setPrompt(null))
+                }
+              >
+                {w.label}
+              </Button>
+            ))}
+          </div>
+          {prompt && (
+            <div className="flex flex-col items-center gap-3 rounded-md border border-border p-4">
+              <p className="text-sm text-muted-foreground">
+                Scan with {prompt.wallet === "xaman" ? "Xaman" : "Joey Wallet"} to sign in
+              </p>
+              {prompt.qrImage ? (
+                <img src={prompt.qrImage} alt="Sign-in QR code" className="h-48 w-48" />
+              ) : prompt.qrValue ? (
+                <div className="rounded bg-background p-2">
+                  <QRCodeSVG value={prompt.qrValue} size={192} />
+                </div>
+              ) : null}
+              <a href={prompt.deeplink} className="text-xs text-primary underline-offset-4 hover:underline">
+                On your phone? Open the wallet
+              </a>
             </div>
           )}
+        </div>
+      )}
+
+      {chain === "hive" && (
+        <div className="space-y-3">
+          <div className="space-y-1">
+            <Label htmlFor="hive">Hive username</Label>
+            <Input id="hive" placeholder="username" value={hiveUser} onChange={(e) => setHiveUser(e.target.value)} />
+          </div>
           <Button
             variant="secondary"
             className="w-full"
