@@ -1,5 +1,4 @@
 /** hive login event: browser signing + server verification. */
-import { getHiveClient } from "../../client";
 import * as secp from "@noble/secp256k1";
 import { sha256 } from "@noble/hashes/sha2.js";
 import { ripemd160 } from "@noble/hashes/legacy.js";
