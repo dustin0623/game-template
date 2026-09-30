@@ -1,2 +1,2 @@
 /** Public API of the Solana chain module. */
-export { connectSolana, signSolanaLogin, verifySolanaSignature } from "./auth";
+export { connectSolana, signSolanaLogin, verifySolanaSignature } from "./events/login/action";

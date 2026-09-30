@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { PrivateKey, cryptoUtils } from "@hiveio/dhive";
 import { verifyHiveSignature, recoverHivePublicKey } from "./verify";
-import type { HiveClient } from "../client";
+import type { HiveClient } from "../../client";
 
 const message = "Sign in to the game\nNonce: abc123";
 const key = PrivateKey.fromSeed("hive-auth-test");

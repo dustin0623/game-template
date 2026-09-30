@@ -2,7 +2,7 @@ import * as secp from "@noble/secp256k1";
 import { sha256 } from "@noble/hashes/sha2.js";
 import { ripemd160 } from "@noble/hashes/legacy.js";
 import bs58 from "bs58";
-import { getHiveClient, type HiveClient } from "../client";
+import { getHiveClient, type HiveClient } from "../../client";
 
 // The noble ECDSA API needs a hash function provided by the host app.
 secp.hashes.sha256 = sha256;
