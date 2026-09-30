@@ -79,7 +79,25 @@ export function LoginPanel() {
         </div>
       )}
 
-      {chain && (
+      {chain === "solana" && (
+        <div className="space-y-2">
+          <p className="text-xs text-muted-foreground">Choose your wallet</p>
+          <div className="grid grid-cols-2 gap-2">
+            {SOLANA_WALLETS.map((w) => (
+              <Button
+                key={w.id}
+                variant="secondary"
+                disabled={busy}
+                onClick={() => run(() => walletLogin("solana", { solanaWallet: w.id }))}
+              >
+                {w.label}
+              </Button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {chain && chain !== "solana" && (
         <div className="space-y-3">
           {chain === "hive" && (
             <div className="space-y-1">
@@ -87,7 +105,12 @@ export function LoginPanel() {
               <Input id="hive" placeholder="username" value={hiveUser} onChange={(e) => setHiveUser(e.target.value)} />
             </div>
           )}
-          <Button variant="secondary" className="w-full" disabled={busy} onClick={() => run(() => walletLogin(chain, hiveUser))}>
+          <Button
+            variant="secondary"
+            className="w-full"
+            disabled={busy}
+            onClick={() => run(() => walletLogin(chain, { hiveUsername: hiveUser }))}
+          >
             Sign in with {CHAIN_LABEL[chain]}
           </Button>
         </div>
