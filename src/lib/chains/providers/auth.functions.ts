@@ -3,6 +3,8 @@ import {
   ChallengeRequestSchema,
   EmailCredentialsSchema,
   WalletLoginSchema,
+  XamanStartSchema,
+  XamanStatusSchema,
 } from "@/features/types/auth.types";
 
 export const emailLoginFn = createServerFn({ method: "POST" })
@@ -31,4 +33,18 @@ export const walletLoginFn = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { loginWithWallet } = await import("./wallet-login");
     return loginWithWallet(data);
+  });
+
+export const xamanStartFn = createServerFn({ method: "POST" })
+  .inputValidator((d) => XamanStartSchema.parse(d))
+  .handler(async ({ data }) => {
+    const { createXamanSignIn } = await import("@/lib/chains/modules/xrpl/events/login/action");
+    return createXamanSignIn(data.message, data.token);
+  });
+
+export const xamanStatusFn = createServerFn({ method: "POST" })
+  .inputValidator((d) => XamanStatusSchema.parse(d))
+  .handler(async ({ data }) => {
+    const { getXamanStatus } = await import("@/lib/chains/modules/xrpl/events/login/action");
+    return getXamanStatus(data.uuid);
   });

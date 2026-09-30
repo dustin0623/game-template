@@ -35,8 +35,13 @@ export const WalletLoginSchema = z.object({
   address: z.string().min(1).max(128),
   message: z.string().max(1000),
   token: z.string().max(2000),
-  signature: z.string().min(1).max(1000),
-  /** Required for XRPL (address is derived from it). */
+  /** Signature, signed tx blob (Joey) or Xaman request uuid. */
+  signature: z.string().min(1).max(4000),
+  /** Required for GemWallet (address is derived from it). */
   publicKey: z.string().max(200).optional(),
+  xrplWallet: z.enum(["xaman", "joey", "gemwallet"]).optional(),
 });
 export type WalletLogin = z.infer<typeof WalletLoginSchema>;
+
+export const XamanStartSchema = z.object({ message: z.string().max(1000), token: z.string().max(2000) });
+export const XamanStatusSchema = z.object({ uuid: z.string().uuid() });

@@ -28,6 +28,32 @@ export const chainEnv = {
     treasuryAddress: "SOLANA_TREASURY_ADDRESS",
     treasurySecretKey: "SOLANA_TREASURY_SECRET_KEY",
   },
+  xrpl: {
+    /** Xaman developer console (apps.xumm.dev) API key + secret. Server-only. */
+    xamanApiKey: "XAMAN_API_KEY",
+    xamanApiSecret: "XAMAN_API_SECRET",
+  },
+} as const;
+
+export const xrplChainConfig = {
+  /** Wallets offered for XRPL sign-in, in display order. */
+  wallets: ["xaman", "joey", "gemwallet"],
+  xamanApiUrl: "https://xumm.app/api/v1/platform",
+  /** Xaman sign-in request lifetime (minutes). */
+  xamanExpireMinutes: 5,
+  walletConnect: {
+    /** Reown (WalletConnect) project id is publishable → browser env var. */
+    projectIdEnv: "VITE_REOWN_PROJECT_ID",
+    chainId: "xrpl:0",
+    method: "xrpl_signTransaction",
+    metadata: {
+      name: "Lovable Game",
+      description: "Sign in to Lovable Game",
+      icons: [] as string[],
+    },
+  },
+  /** Mobile deep link prefix that opens Joey with a WalletConnect URI. */
+  joeyDeeplink: "joey://wc?uri=",
 } as const;
 
 export const hiveChainConfig = {
@@ -73,4 +99,5 @@ export const solanaChainConfig = {
 export const chainsConfig = {
   hive: hiveChainConfig,
   solana: solanaChainConfig,
+  xrpl: xrplChainConfig,
 } as const;
