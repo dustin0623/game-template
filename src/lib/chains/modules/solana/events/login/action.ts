@@ -73,6 +73,11 @@ function injected(wallet: Exclude<SolanaWallet, "metamask">): InjectedProvider {
   return found;
 }
 
+/** Shared with other Solana events (transfers) so wallet discovery lives here. */
+export function getInjectedSolanaProvider(wallet: Exclude<SolanaWallet, "metamask">): InjectedProvider {
+  return injected(wallet);
+}
+
 /** Whether an injected provider for this wallet is present in the browser. */
 export function isSolanaWalletAvailable(wallet: SolanaWallet): boolean {
   if (typeof window === "undefined") return false;
