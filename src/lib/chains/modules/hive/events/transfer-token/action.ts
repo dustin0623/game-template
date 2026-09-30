@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { getHiveClient, type HiveClient } from "../../client";
-import { isNativeHiveSymbol } from "../../../config";
+
 import {
   HiveAccountSchema,
   SymbolSchema,
