@@ -9,7 +9,7 @@ import {
   fail,
   type HiveActionResult,
 } from "../../types";
-import type { PaymentValidationResult } from "hivexph-sdk";
+import type { PaymentValidationResult, PaymentExpectation } from "hivexph-sdk";
 
 export const ValidatePaymentInput = z.object({
   transactionId: TransactionIdSchema,
