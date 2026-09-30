@@ -19,6 +19,17 @@ export const chainEnv = {
     treasuryAccount: "HIVE_TREASURY_ACCOUNT",
     treasuryKey: "HIVE_TREASURY_ACTIVE_KEY",
   },
+  solana: {
+    /** Full mainnet RPC URL for any provider (Helius, QuickNode, Alchemy, ...). */
+    rpcEndpoint: "SOLANA_RPC_ENDPOINT",
+    /** Generic API key appended to the endpoint when it carries none. */
+    rpcApiKey: "SOLANA_RPC_API_KEY",
+    /** Helius key: the mainnet URL is built from it automatically. */
+    heliusApiKey: "HELIUS_API_KEY",
+    /** Treasury wallet used for server-signed payouts. */
+    treasuryAddress: "SOLANA_TREASURY_ADDRESS",
+    treasurySecretKey: "SOLANA_TREASURY_SECRET_KEY",
+  },
 } as const;
 
 export const hiveChainConfig = {
@@ -44,6 +55,20 @@ export const solanaChainConfig = {
   dappName: "Lovable Game",
   /** Wallets offered for Solana sign-in, in display order. */
   wallets: ["phantom", "solflare", "backpack", "metamask"],
+  /** Mainnet only — devnet and testnet are never used. */
+  network: "mainnet-beta",
+  commitment: "confirmed",
+  /** Built from `chainEnv.solana.heliusApiKey` when no full endpoint is set. */
+  heliusMainnetUrl: "https://mainnet.helius-rpc.com",
+  /** Last-resort public endpoint (heavily rate limited). */
+  publicMainnetUrl: "https://api.mainnet-beta.solana.com",
+  /** Backend signing wallets, referenced by alias. */
+  accounts: {
+    treasury: {
+      addressEnv: chainEnv.solana.treasuryAddress,
+      keyEnv: chainEnv.solana.treasurySecretKey,
+    },
+  },
 } as const;
 
 export const chainsConfig = {
