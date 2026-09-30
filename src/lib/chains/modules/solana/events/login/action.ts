@@ -43,12 +43,14 @@ const encode = (message: string) => new TextEncoder().encode(message);
 
 /* ------------------------------------------------- injected wallet adapters */
 
-type InjectedProvider = {
+export type InjectedProvider = {
   isPhantom?: boolean;
   isBackpack?: boolean;
   publicKey?: { toString(): string } | null;
   connect: (opts?: { onlyIfTrusted?: boolean }) => Promise<{ publicKey?: { toString(): string } } | void>;
   signMessage: (msg: Uint8Array, enc?: "utf8") => Promise<SignatureLike>;
+  /** Present on Phantom, Solflare and Backpack; used for transfers. */
+  signAndSendTransaction?: (tx: unknown) => Promise<{ signature: string }>;
 };
 
 type SolanaWindow = {
@@ -69,6 +71,11 @@ function injected(wallet: Exclude<SolanaWallet, "metamask">): InjectedProvider {
         : (w.backpack ?? (w.solana?.isBackpack ? w.solana : undefined));
   if (!found) missing(wallet);
   return found;
+}
+
+/** Shared with other Solana events (transfers) so wallet discovery lives here. */
+export function getInjectedSolanaProvider(wallet: Exclude<SolanaWallet, "metamask">): InjectedProvider {
+  return injected(wallet);
 }
 
 /** Whether an injected provider for this wallet is present in the browser. */
