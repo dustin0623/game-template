@@ -82,7 +82,6 @@ export async function transferToken(input: TransferTokenInput): Promise<HiveActi
             symbol,
             action,
             metadata: metadata ?? null,
-            id: hiveChainConfig.applicationId,
           });
 
     return ok({ transactionId: result.transactionId ?? null, layer, signer });
