@@ -1,7 +1,7 @@
-import { pendingTransactionRepository } from "@/lib/modules/pending-transactions/server.repository";
-import { processedTransactionRepository } from "@/lib/modules/processed-transactions/server.repository";
-import type { PendingTransactionRepository } from "@/lib/modules/pending-transactions/server.types";
-import type { ProcessedTransactionRepository } from "@/lib/modules/processed-transactions/server.types";
+import { pendingTransactionRepository } from "@/lib/modules/transactions-pending/server.repository";
+import { processedTransactionRepository } from "@/lib/modules/transactions-processed/server.repository";
+import type { PendingTransactionRepository } from "@/lib/modules/transactions-pending/server.types";
+import type { ProcessedTransactionRepository } from "@/lib/modules/transactions-processed/server.types";
 
 /**
  * Polling context: everything the worker needs, injected.

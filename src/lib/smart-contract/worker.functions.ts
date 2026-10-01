@@ -19,8 +19,8 @@ export const runTransactionBatch = createServerFn({ method: "POST" }).handler(as
 export const getTransactionStatus = createServerFn({ method: "GET" })
   .inputValidator((d) => z.object({ transactionId: z.string().min(1) }).parse(d))
   .handler(async ({ data }) => {
-    const { pendingTransactionRepository } = await import("@/lib/modules/pending-transactions/server.repository");
-    const { processedTransactionRepository } = await import("@/lib/modules/processed-transactions/server.repository");
+    const { pendingTransactionRepository } = await import("@/lib/modules/transactions-pending/server.repository");
+    const { processedTransactionRepository } = await import("@/lib/modules/transactions-processed/server.repository");
     const pending = await pendingTransactionRepository.findById(data.transactionId);
     if (pending) return { status: pending.status, type: pending.type, onChainTxId: null, error: pending.lastError };
     const done = await processedTransactionRepository.findById(data.transactionId);

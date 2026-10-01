@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { PendingTransactionDocumentSchema } from "@/lib/modules/pending-transactions/server.model";
+import { PendingTransactionDocumentSchema } from "@/lib/modules/transactions-pending/server.model";
 
 /** MongoDB collection name for finished worker outcomes. */
 export const PROCESSED_TRANSACTIONS_COLLECTION = "processed_transactions";
