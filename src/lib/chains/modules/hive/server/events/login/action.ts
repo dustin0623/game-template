@@ -1,25 +1,9 @@
-/** hive login event: browser signing + server verification. */
+/** Hive login (server side): recover the signing key and match it against the account. */
 import * as secp from "@noble/secp256k1";
 import { sha256 } from "@noble/hashes/sha2.js";
 import { ripemd160 } from "@noble/hashes/legacy.js";
 import bs58 from "bs58";
-import { getHiveClient, type HiveClient } from "../../client";
-/**
- * Browser: ask Hive Keychain to sign the login challenge.
- *
- * Uses the SDK's Keychain client (extension detection, cancellation handling
- * and response normalisation live there) rather than touching
- * `window.hive_keychain` directly.
- */
-export async function signHiveLogin(username: string, message: string): Promise<{ signature: string }> {
-  const res = await getHiveClient().keychain.requestSignIn({
-    username,
-    message,
-    authority: "posting",
-  });
-  if (!res.signature) throw new Error("Signing cancelled");
-  return { signature: res.signature };
-}
+import { getHiveClient, type HiveClient } from "../../../client";
 
 // The noble ECDSA API needs a hash function provided by the host app.
 secp.hashes.sha256 = sha256;

@@ -1,5 +1,5 @@
 /**
- * Solana login event: browser signing + server verification.
+ * Solana login (wallet side): connect + sign the challenge. Browser only.
  *
  * Supported wallets: Phantom, Solflare, Backpack (injected providers) and
  * MetaMask (official Solana client, Wallet Standard features).
@@ -8,7 +8,6 @@
  * bytes, so one server-side verifier covers every wallet.
  */
 import bs58 from "bs58";
-import nacl from "tweetnacl";
 import { solanaChainConfig } from "@/lib/chains/modules/config";
 import { SOLANA_WALLETS, type SolanaConnectResult, type SolanaSignResult, type SolanaWallet } from "./types";
 
@@ -161,16 +160,3 @@ export async function signSolanaLogin(
   return { signature: toBase58Signature(signed) };
 }
 
-/* ------------------------------------------------------------------- server */
-
-/** Server: verify an ed25519 signature (base58) from any Solana wallet. */
-export function verifySolanaSignature(address: string, message: string, signatureB58: string): boolean {
-  try {
-    const publicKey = bs58.decode(address);
-    const signature = bs58.decode(signatureB58);
-    if (publicKey.length !== 32 || signature.length !== 64) return false;
-    return nacl.sign.detached.verify(encode(message), signature, publicKey);
-  } catch {
-    return false;
-  }
-}

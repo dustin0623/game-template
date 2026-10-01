@@ -1,10 +1,10 @@
 import { describe, expect, it, beforeEach, afterEach } from "vitest";
 import nacl from "tweetnacl";
 import bs58 from "bs58";
+import { verifySolanaSignature } from "../../../server/events/login/action";
 import {
   connectSolana,
   signSolanaLogin,
-  verifySolanaSignature,
   isSolanaWalletAvailable,
   setMetaMaskWallet,
   SOLANA_WALLETS,
