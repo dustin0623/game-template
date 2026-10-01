@@ -22,7 +22,7 @@ export type BuildTransferInput = {
   /** "SOL" or an SPL mint address. */
   symbol: string;
   action?: string | undefined;
-  metadata?: Record<string, unknown> | null;
+  metadata?: Record<string, unknown> | null | undefined;
 };
 
 /** Build an unsigned SOL / SPL transfer (with optional memo) ready for signing. */

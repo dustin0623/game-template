@@ -440,7 +440,7 @@ index.ts
 Chain operations belong under:
 
 ```text
-src/lib/chains/modules/{chain}/events/
+src/lib/chains/modules/{chain}/{wallet,server}/events/
 ```
 
 Example:
@@ -801,7 +801,7 @@ Determines what a transaction needs to do.
 It may invoke:
 
 ```text
-src/lib/chains/modules/{chain}/events/{event}/action.ts
+src/lib/chains/modules/{chain}/{wallet,server}/events/{event}/action.ts
 ```
 
 or appropriate:
@@ -1421,7 +1421,7 @@ Preserve the architecture unless the user explicitly requests an architectural c
 <!-- LOVABLE:END -->
 
 # Auth decisions
-- Wallet signing and signature verification live in src/lib/chains/modules/{chain}/events/login/action.ts (sign + verify); src/lib/chains/providers/{hive,solana,xrpl}/{sign,verify,index}.ts delegate to that event, providers also own challenge, player lookup and email auth (why: one place per chain owns all protocol/crypto/RPC detail).
+- Each chain module splits into wallet/ (browser-only: extension/WalletConnect signing, player transfers) and server/ (verification, treasury payouts, RPC reads), each with events/{event}/action.ts and an index.ts barrel; shared client.ts/types.ts stay at the chain root. providers/{chain}/sign.ts imports from wallet/, verify.ts from server/ (why: secrets and server crypto never mix with browser wallet code).
 - Auth lives in src/lib/chains/providers/{email}; wallet login = HMAC-signed challenge → wallet signature via module signer → server verify via module verifier (why: stateless, no private keys ever requested).
 - Hive login uses hivexph-sdk (Keychain client for signing, shared rpc client for account keys) plus @noble/secp256k1 for key recovery; @hiveio/dhive is a devDependency used only to generate reference signatures in tests (why: one SDK for all Hive traffic).
 - Solana login: Phantom/Solflare/Backpack via injected providers, MetaMask via @metamask/connect-solana (standard:connect + solana:signMessage); all yield ed25519 detached sigs so one verifier covers all (why: no per-wallet server code).
