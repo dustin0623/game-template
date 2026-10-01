@@ -1,4 +1,4 @@
-import { playerRepository, toPlayer } from "@/lib/database/mock/repositories/player.repository";
+import { playerRepository, toPlayer } from "@/lib/modules/players/server.repository";
 import type { EmailCredentials } from "./types";
 import { hashPassword } from "./password";
 

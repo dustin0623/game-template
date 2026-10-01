@@ -517,7 +517,7 @@ Persistent production data uses MongoDB.
 Database code belongs under:
 
 ```text
-src/lib/database/
+src/lib/modules/
 ```
 
 Use repository abstractions.
@@ -525,26 +525,16 @@ Use repository abstractions.
 Recommended structure:
 
 ```text
-src/lib/database/
-├── mongodb/
-│   ├── client.ts
-│   ├── collections/
-│   └── repositories/
-│
-└── mock/
-    ├── mock-database.ts
-    ├── collections/
-    └── seed.ts
+src/lib/modules/{collection}/      # one folder per collection / domain
+├── server.model.ts                # Zod document schema + collection name
+├── server.types.ts                # domain types + repository interface
+└── server.repository.ts           # persistence ops (mock now, MongoDB later)
+
+src/features/stores/mock/
+└── database.ts                    # in-memory mock store (dev only)
 ```
 
-Use specific repositories where appropriate:
-
-```text
-transaction.repository.ts
-player.repository.ts
-inventory.repository.ts
-marketplace.repository.ts
-```
+Example: `src/lib/modules/players/`, `src/lib/modules/transactions/`, `src/lib/modules/inventory/`, `src/lib/modules/marketplace/`.
 
 Do not create one giant generic repository unless there is a real architectural reason.
 
@@ -1398,7 +1388,7 @@ Blockchain
 → src/lib/chains/modules/
 
 Database
-→ src/lib/database/
+→ src/lib/modules/{collection}/ (mock store: src/features/stores/mock/database.ts)
 
 Server Transaction Worker
 → server/smart-contract/
@@ -1434,7 +1424,7 @@ Preserve the architecture unless the user explicitly requests an architectural c
 - Hive login uses hivexph-sdk (Keychain client for signing, shared rpc client for account keys) plus @noble/secp256k1 for key recovery; @hiveio/dhive is a devDependency used only to generate reference signatures in tests (why: one SDK for all Hive traffic).
 - Solana login: Phantom/Solflare/Backpack via injected providers, MetaMask via @metamask/connect-solana (standard:connect + solana:signMessage); all yield ed25519 detached sigs so one verifier covers all (why: no per-wallet server code).
 - Enabled chain set via config.auth.chain (single value) — at most one chain provider.
-- Players stored in in-memory mock repository until MongoDB is wired (why: no DB configured yet).
+- Persistence: one folder per collection in src/lib/modules/{collection}/ (server.model/types/repository.ts); mock store in src/features/stores/mock/database.ts, only repositories touch it (why: swap to MongoDB without touching callers).
 
 # Chain module decisions
 - Chain-specific settings (endpoints, application id, signing env var NAMES) live in src/lib/chains/modules/config.ts; src/lib/config/config.ts is app config only. The SDK's own defaults (RPC/beacon URLs) and token symbols/precisions are NOT duplicated there — pass tokens directly in each action file and only add config entries to override the SDK.

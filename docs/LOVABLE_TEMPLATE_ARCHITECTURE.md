@@ -127,9 +127,8 @@ project/
 │       │   ├── providers/
 │       │   └── modules/
 │       │
-│       ├── database/
-│       │   ├── mongodb/
-│       │   └── mock/
+│       ├── modules/
+│       │   └── {collection}/   (server.model/types/repository.ts)
 │       │
 │       ├── game/
 │       │   ├── combat/
@@ -979,34 +978,22 @@ Production persistence uses MongoDB.
 The database layer belongs under:
 
 ```text
-src/lib/database/
+src/lib/modules/
 ```
 
 Recommended structure:
 
 ```text
-src/lib/database/
-├── mongodb/
-│   ├── client.ts
-│   ├── collections/
-│   └── repositories/
-│
-└── mock/
-    ├── mock-database.ts
-    ├── collections/
-    └── seed.ts
+src/lib/modules/{collection}/      # one folder per collection / domain
+├── server.model.ts                # Zod document schema + collection name
+├── server.types.ts                # domain types + repository interface
+└── server.repository.ts           # persistence ops (mock now, MongoDB later)
+
+src/features/stores/mock/
+└── database.ts                    # in-memory mock store (dev only)
 ```
 
-Repositories provide a persistence abstraction.
-
-Example:
-
-```text
-transaction.repository.ts
-player.repository.ts
-inventory.repository.ts
-marketplace.repository.ts
-```
+Example: `src/lib/modules/players/`, `src/lib/modules/transactions/`, `src/lib/modules/inventory/`, `src/lib/modules/marketplace/`.
 
 Avoid scattering raw MongoDB queries throughout application events.
 
