@@ -18,6 +18,6 @@ export interface PendingTransactionRepository {
   claimBatch(workerId: string, limit: number): Promise<PendingTransactionDocument[]>;
   /** Return a claimed row to PENDING after a retryable failure. */
   release(transactionId: string, error: string): Promise<void>;
-  /** Remove a row once its outcome is stored in processed-transactions. */
+  /** Remove a row once its outcome is stored in transactions-processed. */
   remove(transactionId: string): Promise<void>;
 }

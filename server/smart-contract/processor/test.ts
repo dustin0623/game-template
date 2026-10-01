@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { createProcessor, mockSuccess } from "./index";
-import type { PendingTransactionDocument } from "@/lib/modules/pending-transactions/server.model";
+import type { PendingTransactionDocument } from "@/lib/modules/transactions-pending/server.model";
 
 const tx = { transactionId: "abcdef123456", type: "withdraw" } as PendingTransactionDocument;
 

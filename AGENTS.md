@@ -547,7 +547,7 @@ Do not scatter raw MongoDB queries throughout application actions.
 The following MongoDB collection is mandatory:
 
 ```text
-pending-transactions
+transactions-pending
 ```
 
 It is used for asynchronous external asset operations such as:
@@ -583,7 +583,7 @@ must use the transaction processing system.
 The following MongoDB collection is mandatory:
 
 ```text
-processed-transactions
+transactions-processed
 ```
 
 Every attempted pending transaction must eventually be recorded here.
@@ -598,28 +598,28 @@ ERROR
 Successful transaction:
 
 ```text
-pending-transactions
+transactions-pending
       ↓
 process
       ↓
 SUCCESS
       ↓
-processed-transactions
+transactions-processed
 ```
 
 Failed transaction:
 
 ```text
-pending-transactions
+transactions-pending
       ↓
 process
       ↓
 ERROR
       ↓
-processed-transactions
+transactions-processed
 ```
 
-Do not leave failed transactions permanently in `pending-transactions`.
+Do not leave failed transactions permanently in `transactions-pending`.
 
 ---
 
@@ -682,14 +682,14 @@ Do not create a separate package.json solely for the smart-contract worker unles
 
 The smart-contract server is responsible for:
 
-- polling `pending-transactions`
+- polling `transactions-pending`
 - fetching batches
 - claiming transactions
 - processing transactions
 - calling appropriate application/chain operations
 - handling failures
 - recording results
-- moving completed attempts to `processed-transactions`
+- moving completed attempts to `transactions-processed`
 
 The server worker must NOT become a second copy of the game.
 
@@ -936,7 +936,7 @@ Blockchain operation fails
         ↓
 transaction status = ERROR
         ↓
-processed-transactions
+transactions-processed
 ```
 
 The error should contain enough information for debugging and auditing without exposing sensitive information.
@@ -1280,7 +1280,7 @@ External transactions:
 ```text
 Application Event
  ↓
-pending-transactions
+transactions-pending
  ↓
 Smart-Contract Worker
  ↓
@@ -1290,7 +1290,7 @@ Chain Module / Game Event
  ↓
 Blockchain / Player State
  ↓
-processed-transactions
+transactions-processed
 ```
 
 ---
@@ -1396,10 +1396,10 @@ Server Transaction Worker
 → server/smart-contract/
 
 Pending Transactions
-→ MongoDB: pending-transactions
+→ MongoDB: transactions-pending
 
 Processed Transactions
-→ MongoDB: processed-transactions
+→ MongoDB: transactions-processed
 
 Public Game Assets
 → public/game/
@@ -1438,6 +1438,6 @@ Preserve the architecture unless the user explicitly requests an architectural c
 
 # Transaction Polling Rule
 
-- The poller (server/smart-contract/polling) reads and writes only through the pending-transactions and processed-transactions repositories (why: it works unchanged on the mock store and on MongoDB).
+- The poller (server/smart-contract/polling) reads and writes only through the transactions-pending and transactions-processed repositories (why: it works unchanged on the mock store and on MongoDB).
 
 - Smart-contract worker is unified: server/smart-contract/processor routes `chain:action` to handlers; in mock mode the app runs one poll cycle every few seconds via a dev-only hook calling runTransactionBatch, in live mode a separate worker process runs the same poller (why: one code path, no mock/live duplication).

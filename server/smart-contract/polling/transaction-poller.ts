@@ -1,4 +1,4 @@
-import type { PendingTransactionDocument } from "@/lib/modules/pending-transactions/server.model";
+import type { PendingTransactionDocument } from "@/lib/modules/transactions-pending/server.model";
 import type { PollingContext } from "./context";
 
 export type HandlerResult =
