@@ -21,7 +21,7 @@ export type BuildTransferInput = {
   amount: string;
   /** "SOL" or an SPL mint address. */
   symbol: string;
-  action?: string;
+  action?: string | undefined;
   metadata?: Record<string, unknown> | null;
 };
 
