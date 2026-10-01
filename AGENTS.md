@@ -1439,3 +1439,5 @@ Preserve the architecture unless the user explicitly requests an architectural c
 # Transaction Polling Rule
 
 - The poller (server/smart-contract/polling) reads and writes only through the pending-transactions and processed-transactions repositories (why: it works unchanged on the mock store and on MongoDB).
+
+- Smart-contract worker is unified: server/smart-contract/processor routes `chain:action` to handlers; in mock mode the app runs one poll cycle every few seconds via a dev-only hook calling runTransactionBatch, in live mode a separate worker process runs the same poller (why: one code path, no mock/live duplication).
