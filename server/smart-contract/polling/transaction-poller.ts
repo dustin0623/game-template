@@ -1,7 +1,9 @@
 import type { PendingTransactionDocument } from "@/lib/modules/pending-transactions/server.model";
 import type { PollingContext } from "./context";
 
-export type HandlerResult = { ok: true; txId: string | null; data?: unknown } | { ok: false; error: string };
+export type HandlerResult =
+  | { ok: true; onChainTxId: string | null; blockNumber?: number | null; data?: unknown }
+  | { ok: false; error: string; retryable?: boolean };
 export type TransactionHandler = (tx: PendingTransactionDocument) => Promise<HandlerResult>;
 
 /** One poll cycle: claim a batch, run the handler, record every outcome. */
@@ -14,24 +16,27 @@ export async function pollOnce(ctx: PollingContext, handle: TransactionHandler) 
     } catch (e) {
       result = { ok: false, error: e instanceof Error ? e.message : String(e) };
     }
-    if (!result.ok && tx.attempts < ctx.maxAttempts) {
-      await ctx.pending.release(tx.id, result.error);
+    const limit = Math.min(tx.maxAttempts, ctx.maxAttempts);
+    if (!result.ok && result.retryable !== false && tx.attempts < limit) {
+      await ctx.pending.release(tx.transactionId, result.error);
       continue;
     }
     await ctx.processed.create({
-      pendingTransactionId: tx.id,
+      transactionId: tx.transactionId,
       playerId: tx.playerId,
-      chain: tx.chain,
-      action: tx.action,
-      payload: tx.payload,
+      walletAddress: tx.walletAddress,
+      type: tx.type,
+      metadata: tx.metadata,
       attempts: tx.attempts,
-      status: result.ok ? "SUCCESS" : "ERROR",
-      txId: result.ok ? result.txId : null,
+      status: result.ok ? "SUCCESS" : "FAILED",
+      onChainTxId: result.ok ? result.onChainTxId : null,
+      blockNumber: result.ok ? (result.blockNumber ?? null) : null,
       result: result.ok ? (result.data ?? null) : null,
       error: result.ok ? null : result.error,
       processedBy: ctx.workerId,
+      queuedAt: tx.createdAt,
     });
-    await ctx.pending.remove(tx.id);
+    await ctx.pending.remove(tx.transactionId);
   }
   return batch.length;
 }

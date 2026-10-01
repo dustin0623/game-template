@@ -1,29 +1,40 @@
 import { mockDb } from "@/features/stores/mock/database";
-import { PendingTransactionDocumentSchema } from "./server.model";
+import { PendingTransactionDocumentSchema, TransactionMetadataSchemas } from "./server.model";
 import type { PendingTransactionRepository } from "./server.types";
 
 const now = () => new Date().toISOString();
+const DEFAULT_MAX_ATTEMPTS = 3;
 
 /** Pending transactions repository (mock store until MongoDB is wired). */
 export const pendingTransactionRepository: PendingTransactionRepository = {
   async create(data) {
+    if (data.transactionId) {
+      const existing = mockDb.pendingTransactions.get(data.transactionId);
+      if (existing) return { ...existing };
+    }
+    const metadata = TransactionMetadataSchemas[data.type].parse(data.metadata);
     const ts = now();
     const record = PendingTransactionDocumentSchema.parse({
-      ...data,
-      id: crypto.randomUUID(),
+      transactionId: data.transactionId ?? crypto.randomUUID(),
+      playerId: data.playerId,
+      walletAddress: data.walletAddress ?? null,
+      type: data.type,
       status: "PENDING",
+      metadata,
       attempts: 0,
+      maxAttempts: data.maxAttempts ?? DEFAULT_MAX_ATTEMPTS,
       claimedBy: null,
       claimedAt: null,
       lastError: null,
       createdAt: ts,
       updatedAt: ts,
     });
-    mockDb.pendingTransactions.set(record.id, record);
-    return record;
+    mockDb.pendingTransactions.set(record.transactionId, record);
+    return { ...record };
   },
-  async findById(id) {
-    return mockDb.pendingTransactions.get(id) ?? null;
+  async findById(transactionId) {
+    const t = mockDb.pendingTransactions.get(transactionId);
+    return t ? { ...t } : null;
   },
   async claimBatch(workerId, limit) {
     const ts = now();
@@ -42,18 +53,12 @@ export const pendingTransactionRepository: PendingTransactionRepository = {
     }
     return batch.map((t) => ({ ...t }));
   },
-  async release(id, error) {
-    const t = mockDb.pendingTransactions.get(id);
+  async release(transactionId, error) {
+    const t = mockDb.pendingTransactions.get(transactionId);
     if (!t) return;
-    Object.assign(t, {
-      status: "PENDING",
-      claimedBy: null,
-      claimedAt: null,
-      lastError: error,
-      updatedAt: now(),
-    });
+    Object.assign(t, { status: "PENDING", claimedBy: null, claimedAt: null, lastError: error, updatedAt: now() });
   },
-  async remove(id) {
-    mockDb.pendingTransactions.delete(id);
+  async remove(transactionId) {
+    mockDb.pendingTransactions.delete(transactionId);
   },
 };

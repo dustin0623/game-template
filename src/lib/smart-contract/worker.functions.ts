@@ -15,15 +15,15 @@ export const runTransactionBatch = createServerFn({ method: "POST" }).handler(as
   return { processed, skipped: false };
 });
 
-/** Status of a queued transaction: PENDING / PROCESSING / SUCCESS / ERROR. */
+/** Status of a queued transaction: PENDING / PROCESSING / SUCCESS / FAILED / CANCELLED. */
 export const getTransactionStatus = createServerFn({ method: "GET" })
-  .inputValidator((d) => z.object({ id: z.string().min(1) }).parse(d))
+  .inputValidator((d) => z.object({ transactionId: z.string().min(1) }).parse(d))
   .handler(async ({ data }) => {
     const { pendingTransactionRepository } = await import("@/lib/modules/pending-transactions/server.repository");
     const { processedTransactionRepository } = await import("@/lib/modules/processed-transactions/server.repository");
-    const pending = await pendingTransactionRepository.findById(data.id);
-    if (pending) return { status: pending.status, txId: null, error: pending.lastError };
-    const done = await processedTransactionRepository.findByPendingId(data.id);
-    if (done) return { status: done.status, txId: done.txId, error: done.error };
-    return { status: "UNKNOWN" as const, txId: null, error: null };
+    const pending = await pendingTransactionRepository.findById(data.transactionId);
+    if (pending) return { status: pending.status, type: pending.type, onChainTxId: null, error: pending.lastError };
+    const done = await processedTransactionRepository.findById(data.transactionId);
+    if (done) return { status: done.status, type: done.type, onChainTxId: done.onChainTxId, error: done.error };
+    return { status: "UNKNOWN" as const, type: null, onChainTxId: null, error: null };
   });
