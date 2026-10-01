@@ -1425,6 +1425,7 @@ Preserve the architecture unless the user explicitly requests an architectural c
 - Solana login: Phantom/Solflare/Backpack via injected providers, MetaMask via @metamask/connect-solana (standard:connect + solana:signMessage); all yield ed25519 detached sigs so one verifier covers all (why: no per-wallet server code).
 - Enabled chain set via config.auth.chain (single value) — at most one chain provider.
 - Persistence: one folder per collection in src/lib/modules/{collection}/ (server.model/types/repository.ts); mock store in src/features/stores/mock/database.ts, only repositories touch it (why: swap to MongoDB without touching callers).
+- DB connection lives in src/lib/config/database.ts: MONGODB_URI set → lazy shared MongoClient ("mongodb" mode); unset → "mock" mode and the module is never touched (why: single place decides the storage backend).
 
 # Chain module decisions
 - Chain-specific settings (endpoints, application id, signing env var NAMES) live in src/lib/chains/modules/config.ts; src/lib/config/config.ts is app config only. The SDK's own defaults (RPC/beacon URLs) and token symbols/precisions are NOT duplicated there — pass tokens directly in each action file and only add config entries to override the SDK.
