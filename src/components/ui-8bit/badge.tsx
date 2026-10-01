@@ -1,3 +1,4 @@
+import type * as React from "react";
 import { type VariantProps, cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
@@ -23,7 +24,7 @@ export const badgeVariants = cva("", {
 });
 
 export interface BitBadgeProps
-  extends React.React.HTMLAttributes<HTMLDivElement>,
+  extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {
   asChild?: boolean;
 }
