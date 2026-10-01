@@ -5,11 +5,13 @@ import {
   SymbolSchema,
   QuantitySchema,
   MetadataSchema,
-  isNativeSymbol,
   ok,
   fail,
   type HiveActionResult,
 } from "../../../types";
+
+/** HIVE/HBD are Layer 1 assets; any other symbol rides Hive Engine (Layer 2). */
+const isNativeSymbol = (symbol: string) => symbol === "HIVE" || symbol === "HBD";
 
 export const TransferTokenInput = z.object({
   /** Configured backend account alias whose key signs (resolved lazily by the SDK). */
