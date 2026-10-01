@@ -1533,7 +1533,7 @@ chain operations
 The handler may call:
 
 ```text
-src/lib/chains/modules/{chain}/events/{event}/action.ts
+src/lib/chains/modules/{chain}/{wallet,server}/events/{event}/action.ts
 ```
 
 when blockchain interaction is required.

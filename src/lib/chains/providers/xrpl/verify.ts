@@ -2,7 +2,7 @@ import {
   verifyXrplSignature,
   verifyXrplSignedTx,
   verifyXamanSignIn,
-} from "@/lib/chains/modules/xrpl/events/login/action";
+} from "@/lib/chains/modules/xrpl/server/events/login/action";
 import type { WalletLogin } from "@/features/types/auth.types";
 
 /**

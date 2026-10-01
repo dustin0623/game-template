@@ -12,9 +12,9 @@ import * as solana from "./solana/sign";
 import * as xrpl from "./xrpl/sign";
 import { connect as connectHive } from "./hive";
 import { sign as signHive } from "./hive/sign";
-import { waitForXaman } from "@/lib/chains/modules/xrpl/events/login/action";
-import type { SolanaWallet } from "@/lib/chains/modules/solana/events/login/types";
-import type { XrplWallet, XrplQrPrompt } from "@/lib/chains/modules/xrpl/events/login/types";
+import { waitForXaman } from "@/lib/chains/modules/xrpl/wallet/events/login/action";
+import type { SolanaWallet } from "@/lib/chains/modules/solana/wallet/events/login/types";
+import type { XrplWallet, XrplQrPrompt } from "@/lib/chains/modules/xrpl/types";
 
 export { emailLoginFn, emailSignupFn };
 export { SOLANA_WALLETS, isSolanaWalletAvailable } from "./solana/sign";

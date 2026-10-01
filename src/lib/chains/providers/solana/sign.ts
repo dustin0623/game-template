@@ -4,5 +4,5 @@ export {
   signSolanaLogin as sign,
   isSolanaWalletAvailable,
   SOLANA_WALLETS,
-} from "@/lib/chains/modules/solana/events/login/action";
-export type { SolanaWallet, SolanaWalletMeta } from "@/lib/chains/modules/solana/events/login/types";
+} from "@/lib/chains/modules/solana/wallet/events/login/action";
+export type { SolanaWallet, SolanaWalletMeta } from "@/lib/chains/modules/solana/wallet/events/login/types";
