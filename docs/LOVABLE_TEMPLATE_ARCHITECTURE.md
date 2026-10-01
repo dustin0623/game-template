@@ -155,7 +155,9 @@ project/
 │       │   └── transaction-handler.ts
 │       │
 │       └── polling/
-│           └── transaction-poller.ts
+│           ├── context.ts
+│           ├── transaction-poller.ts
+│           └── test.ts
 │
 ├── public/
 │   └── game/
@@ -1246,7 +1248,9 @@ server/
     │   └── transaction-handler.ts
     │
     └── polling/
-        └── transaction-poller.ts
+        ├── context.ts
+        ├── transaction-poller.ts
+        └── test.ts
 ```
 
 This is a server-side execution layer inside the same application repository.

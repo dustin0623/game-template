@@ -639,7 +639,9 @@ server/
     │   └── transaction-handler.ts
     │
     └── polling/
-        └── transaction-poller.ts
+        ├── context.ts
+        ├── transaction-poller.ts
+        └── test.ts
 ```
 
 This is part of the same repository and application.
@@ -1432,3 +1434,8 @@ Preserve the architecture unless the user explicitly requests an architectural c
 - Hive operations use hivexph-sdk via one shared client in src/lib/chains/modules/hive/client.ts (why: single RPC engine, lazy server-side key resolution).
 - Chain events return HiveActionResult instead of throwing (why: the worker must record ERROR outcomes, never lose failures).
 - Chain event actions accept an optional `client` for injection (why: testable without real blockchain infrastructure).
+
+
+# Transaction Polling Rule
+
+- The poller (server/smart-contract/polling) reads and writes only through the pending-transactions and processed-transactions repositories (why: it works unchanged on the mock store and on MongoDB).
