@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Textarea as ShadcnTextarea } from "@/components/ui/textarea";
 
 
-export const inputVariants = cva("", {
+export const textareaVariants = cva("", {
   variants: {
     font: {
       normal: "",
@@ -19,7 +19,7 @@ export const inputVariants = cva("", {
 
 export interface BitTextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement>,
-    VariantProps<typeof inputVariants> {
+    VariantProps<typeof textareaVariants> {
   asChild?: boolean;
 }
 

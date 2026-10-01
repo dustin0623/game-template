@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/select";
 
 
-export const inputVariants = cva("", {
+export const selectVariants = cva("", {
   variants: {
     font: {
       normal: "",
@@ -31,7 +31,7 @@ export const inputVariants = cva("", {
 
 export interface BitSelectProps
   extends React.SelectHTMLAttributes<HTMLSelectElement>,
-    VariantProps<typeof inputVariants> {
+    VariantProps<typeof selectVariants> {
   asChild?: boolean;
 }
 
@@ -47,7 +47,7 @@ function SelectGroup({
 
 interface BitSelectValueProps
   extends React.ComponentProps<typeof SelectPrimitive.Value>,
-    VariantProps<typeof inputVariants> {
+    VariantProps<typeof selectVariants> {
   asChild?: boolean;
 }
 
@@ -64,7 +64,7 @@ function SelectValue({ ...props }: BitSelectValueProps) {
 
 interface BitSelectTriggerProps
   extends React.ComponentProps<typeof SelectPrimitive.Trigger>,
-    VariantProps<typeof inputVariants> {
+    VariantProps<typeof selectVariants> {
   asChild?: boolean;
 }
 
@@ -96,7 +96,7 @@ function SelectTrigger({ children, ...props }: BitSelectTriggerProps) {
 
 export interface BitSelectContentProps
   extends React.ComponentProps<typeof SelectPrimitive.Content>,
-    VariantProps<typeof inputVariants> {
+    VariantProps<typeof selectVariants> {
   asChild?: boolean;
 }
 
