@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { useDevTransactionWorker } from "@/hooks/use-dev-transaction-worker";
 
 function NotFoundComponent() {
   return (
@@ -117,6 +118,7 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  useDevTransactionWorker();
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -10,6 +10,7 @@
 
 ## Transaction worker
 - [x] Pending/processed transaction modules + poller, tests discoverable, docs updated
+- [x] Unified processor + dev in-app worker + transaction status lookup
 
 ## Later
 - [ ] Persist players in MongoDB (currently in-memory mock)
