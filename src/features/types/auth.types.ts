@@ -3,13 +3,20 @@ import { z } from "zod";
 export const ChainProviderSchema = z.enum(["solana", "hive", "xrpl"]);
 export const AuthProviderSchema = z.enum(["email", "solana", "hive", "xrpl"]);
 
+/** Public player identity (safe to send to the browser). Chain comes from config.auth.chain. */
 export const PlayerSchema = z.object({
-  id: z.string(),
+  id: z.string().uuid(),
+  username: z.string().min(3).max(32),
+  displayName: z.string().min(1).max(50),
+  /** Wallet on the configured chain; null for email-only accounts. */
+  walletAddress: z.string().nullable(),
+  /** Lowercased; null until linked in account settings. */
   email: z.string().email().nullable(),
-  chain: ChainProviderSchema.nullable(),
-  chainAddress: z.string().nullable(),
-  displayName: z.string(),
+  isEmailVerified: z.boolean().default(false),
+  avatarUrl: z.string().url().nullable().default(null),
+  lastLoginAt: z.string().nullable().default(null),
   createdAt: z.string(),
+  updatedAt: z.string(),
 });
 export type Player = z.infer<typeof PlayerSchema>;
 

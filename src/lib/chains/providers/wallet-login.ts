@@ -1,6 +1,6 @@
 import { config } from "@/lib/config/config";
 import type { WalletLogin } from "@/features/types/auth.types";
-import { playerRepository, toPlayer } from "@/lib/modules/players/server.repository";
+import { playerRepository, toPlayer, uniqueUsername } from "@/lib/modules/players/server.repository";
 import { consumeChallenge } from "./challenge.server";
 import { verify as verifySolana } from "./solana/verify";
 import { verify as verifyHive } from "./hive/verify";
@@ -22,15 +22,14 @@ export async function loginWithWallet(input: WalletLogin) {
   const address = typeof result === "string" ? result : result ? input.address : null;
   if (!address) throw new Error("Signature verification failed");
 
-  const existing = await playerRepository.findByChain(input.chain, address);
-  const record =
-    existing ??
-    (await playerRepository.create({
-      email: null,
-      passwordHash: null,
-      chain: input.chain,
-      chainAddress: address,
-      displayName: input.chain === "hive" ? `@${address}` : `${address.slice(0, 4)}…${address.slice(-4)}`,
-    }));
+  const existing = await playerRepository.findByWallet(address);
+  if (existing) return toPlayer(await playerRepository.touchLogin(existing.id));
+  const record = await playerRepository.create({
+    username: await uniqueUsername(input.chain === "hive" ? address : address.slice(0, 12)),
+    displayName: input.chain === "hive" ? `@${address}` : `${address.slice(0, 4)}…${address.slice(-4)}`,
+    walletAddress: address,
+    email: null,
+    passwordHash: null,
+  });
   return toPlayer(record);
 }
