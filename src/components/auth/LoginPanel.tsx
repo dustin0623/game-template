@@ -43,7 +43,9 @@ export function LoginPanel() {
       <div className="space-y-4 text-center">
         <p className="text-sm text-muted-foreground">Signed in as</p>
         <p className="text-2xl font-semibold text-foreground">{player.displayName}</p>
-        {player.chain && <p className="text-xs text-muted-foreground">via {CHAIN_LABEL[player.chain]}</p>}
+        {player.walletAddress && config.auth.chain && (
+          <p className="text-xs text-muted-foreground">via {CHAIN_LABEL[config.auth.chain]}</p>
+        )}
         <Button variant="outline" onClick={logout}>Log out</Button>
       </div>
     );

@@ -7,5 +7,5 @@ export async function loginWithEmail({ email, password }: EmailCredentials) {
   if (!record?.passwordHash || !(await verifyPassword(password, record.passwordHash))) {
     throw new Error("Invalid email or password");
   }
-  return toPlayer(record);
+  return toPlayer(await playerRepository.touchLogin(record.id));
 }
