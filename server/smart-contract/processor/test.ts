@@ -2,15 +2,19 @@ import { describe, expect, it } from "vitest";
 import { createProcessor, mockSuccess } from "./index";
 import type { PendingTransactionDocument } from "@/lib/modules/pending-transactions/server.model";
 
-const tx = { id: "abcdef123456", chain: "hive", action: "withdraw" } as PendingTransactionDocument;
+const tx = { transactionId: "abcdef123456", type: "withdraw" } as PendingTransactionDocument;
 
 describe("processor", () => {
-  it("routes by chain:action, then action, then fallback", async () => {
-    const p = createProcessor({ "hive:withdraw": async () => ({ ok: true, txId: "x" }) });
-    expect(await p(tx)).toEqual({ ok: true, txId: "x" });
-    expect((await createProcessor({}, mockSuccess)(tx)).ok).toBe(true);
+  it("routes by type, then fallback", async () => {
+    const p = createProcessor({ withdraw: async () => ({ ok: true, onChainTxId: "x" }) });
+    expect(await p(tx)).toEqual({ ok: true, onChainTxId: "x" });
+    expect(await createProcessor({}, mockSuccess)(tx)).toMatchObject({ ok: true, onChainTxId: "mock-abcdef12" });
   });
-  it("fails when no handler matches", async () => {
-    expect(await createProcessor({})(tx)).toEqual({ ok: false, error: "No handler for hive:withdraw" });
+  it("fails without retry when no handler matches", async () => {
+    expect(await createProcessor({})(tx)).toEqual({
+      ok: false,
+      error: "No handler for transaction type: withdraw",
+      retryable: false,
+    });
   });
 });
