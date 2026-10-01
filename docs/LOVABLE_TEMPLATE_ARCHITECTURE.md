@@ -1044,8 +1044,8 @@ This makes later MongoDB adoption easier.
 Two collections are mandatory for asynchronous external asset transactions:
 
 ```text
-pending-transactions
-processed-transactions
+transactions-pending
+transactions-processed
 ```
 
 These collections are specifically for transactions that require asynchronous processing.
@@ -1100,7 +1100,7 @@ The transaction queue exists specifically for asynchronous external/financial as
 
 # 29. Pending Transactions
 
-`pending-transactions` acts as the transaction work queue.
+`transactions-pending` acts as the transaction work queue.
 
 Example conceptual document:
 
@@ -1137,32 +1137,32 @@ The document should contain enough information for the server worker to safely p
 
 # 30. Processed Transactions
 
-`processed-transactions` acts as the transaction history/audit collection.
+`transactions-processed` acts as the transaction history/audit collection.
 
 Every attempted transaction must eventually be recorded here.
 
 Successful transaction:
 
 ```text
-pending-transactions
+transactions-pending
         ↓
 PROCESS
         ↓
 SUCCESS
         ↓
-processed-transactions
+transactions-processed
 ```
 
 Failed transaction:
 
 ```text
-pending-transactions
+transactions-pending
         ↓
 PROCESS
         ↓
 ERROR
         ↓
-processed-transactions
+transactions-processed
 ```
 
 A failed transaction must not remain permanently in the pending queue.
@@ -1352,7 +1352,7 @@ Default polling interval:
 The poller should retrieve transactions from:
 
 ```text
-pending-transactions
+transactions-pending
 ```
 
 It should not contain blockchain processing logic.
@@ -1366,7 +1366,7 @@ Transactions are processed in batches.
 Example:
 
 ```text
-pending-transactions
+transactions-pending
         ↓
 fetch batch
         ↓
@@ -1501,7 +1501,7 @@ transaction-handler
    ↓
 SUCCESS / ERROR
    ↓
-processed-transactions
+transactions-processed
 ```
 
 It must guarantee that an attempted transaction reaches the processed collection.
@@ -1555,7 +1555,7 @@ validate request
   ↓
 validate player state
   ↓
-create pending-transactions document
+create transactions-pending document
   ↓
 return pending status
 ```
@@ -1567,7 +1567,7 @@ server/smart-contract/worker
   ↓
 transaction-poller
   ↓
-pending-transactions
+transactions-pending
   ↓
 batch-processor
   ↓
@@ -1585,7 +1585,7 @@ Result:
 ```text
 SUCCESS
    ↓
-processed-transactions
+transactions-processed
 ```
 
 or:
@@ -1593,7 +1593,7 @@ or:
 ```text
 ERROR
    ↓
-processed-transactions
+transactions-processed
 ```
 
 ---
@@ -1813,7 +1813,7 @@ Blockchain
 Asynchronous external transaction processing:
 
 ```text
-pending-transactions
+transactions-pending
         ↓
 Server Smart-Contract Worker
         ↓
@@ -1823,7 +1823,7 @@ Chain Module / Game Event
         ↓
 Blockchain / Application State
         ↓
-processed-transactions
+transactions-processed
 ```
 
 ---
@@ -1918,7 +1918,7 @@ Mock chain transfer
        ↓
 SUCCESS
        ↓
-processed-transactions
+transactions-processed
 ```
 
 and:
@@ -1930,7 +1930,7 @@ Mock chain transfer
        ↓
 ERROR
        ↓
-processed-transactions
+transactions-processed
 ```
 
 The transaction processor should also be tested for:
@@ -2079,7 +2079,7 @@ Game / Transaction Event
     ↓
 MongoDB
     ↓
-pending-transactions
+transactions-pending
     ↓
 Smart Contract Worker
     ↓
@@ -2091,7 +2091,7 @@ Configured Chain Module
     ↓
 Blockchain
     ↓
-processed-transactions
+transactions-processed
 ```
 
 This architecture allows blockchain processing to remain asynchronous.
@@ -2188,13 +2188,13 @@ The worker should use the application's configured chain rather than requiring e
 42. The `/server` directory is part of the same application repository.
 43. `/server/smart-contract` is the asynchronous external transaction worker.
 44. Start the worker with `pnpm server:smart-contract`.
-45. `pending-transactions` is a mandatory MongoDB collection for external transactions.
-46. `processed-transactions` is a mandatory MongoDB collection for external transactions.
+45. `transactions-pending` is a mandatory MongoDB collection for external transactions.
+46. `transactions-processed` is a mandatory MongoDB collection for external transactions.
 47. Deposits must use the pending/processed transaction pipeline when asynchronous processing is required.
 48. Withdrawals must use the pending/processed transaction pipeline.
 49. Marketplace P2P transactions must use the pending/processed transaction pipeline.
 50. Normal in-game purchases do not need the external transaction pipeline unless external settlement is actually required.
-51. Every attempted pending transaction must eventually be recorded in `processed-transactions`.
+51. Every attempted pending transaction must eventually be recorded in `transactions-processed`.
 52. Both successful and failed transactions must be recorded.
 53. Pending transactions must support a processing state.
 54. Pending transactions must be atomically claimed before processing.
@@ -2239,7 +2239,7 @@ The complete architecture is:
           │                   │              Polling Worker
           │                   │                   │
           └──────────┬────────┘                   ↓
-                     │                   pending-transactions
+                     │                   transactions-pending
                 Game Bridge                      │
                      │                           ↓
                   Zustand                Batch Processor
@@ -2256,7 +2256,7 @@ The complete architecture is:
                      │               │                 │
                      └───────────────┴─────────────────┘
                                      ↓
-                           processed-transactions
+                           transactions-processed
                                      │
                                      ↓
                                   MongoDB
@@ -2279,7 +2279,7 @@ Chain Modules + Chain Events
 
 EXTERNAL ASSET TRANSACTIONS
     ↓
-pending-transactions
+transactions-pending
     ↓
 server/smart-contract
     ↓
@@ -2287,7 +2287,7 @@ Batch Processing
     ↓
 Chain/Game Events
     ↓
-processed-transactions
+transactions-processed
 ```
 
 The template therefore provides:

@@ -80,7 +80,7 @@ export type TransactionMetadata<T extends TransactionType = TransactionType> = z
 
 /** A queued operation waiting for the smart-contract worker. */
 export const PendingTransactionDocumentSchema = z.object({
-  /** Unique id and idempotency key; carried into processed-transactions. */
+  /** Unique id and idempotency key; carried into transactions-processed. */
   transactionId: z.string(),
   playerId: z.string(),
   walletAddress: z.string().nullable(),
