@@ -10,7 +10,7 @@ import {
 } from "./auth.functions";
 import * as solana from "./solana/sign";
 import * as xrpl from "./xrpl/sign";
-import { connect as connectHive } from "./hive";
+import { connect as connectHive } from "./hive/connect";
 import { sign as signHive } from "./hive/sign";
 import { waitForXaman } from "@/lib/chains/modules/xrpl/wallet/events/login/action";
 import type { SolanaWallet } from "@/lib/chains/modules/solana/wallet/events/login/types";
