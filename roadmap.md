@@ -8,6 +8,9 @@
 - [x] validate-payment
 - [x] Provider-agnostic mainnet RPC (Helius key or any RPC URL)
 
+## Transaction worker
+- [x] Pending/processed transaction modules + poller, tests discoverable, docs updated
+
 ## Later
 - [ ] Persist players in MongoDB (currently in-memory mock)
 - [ ] XRPL module events
