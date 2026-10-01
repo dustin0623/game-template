@@ -6,10 +6,10 @@ import {
   signJoeyLogin,
   type XrplWallet,
   type XrplQrPrompt,
-} from "@/lib/chains/modules/xrpl/events/login/action";
+} from "@/lib/chains/modules/xrpl/wallet/events/login/action";
 
-export { XRPL_WALLETS } from "@/lib/chains/modules/xrpl/events/login/action";
-export type { XrplWallet, XrplWalletMeta, XrplQrPrompt } from "@/lib/chains/modules/xrpl/events/login/action";
+export { XRPL_WALLETS } from "@/lib/chains/modules/xrpl/wallet/events/login/action";
+export type { XrplWallet, XrplWalletMeta, XrplQrPrompt } from "@/lib/chains/modules/xrpl/wallet/events/login/action";
 
 /** Xaman resolves the account only after signing, so connect happens server-side. */
 export const XAMAN_PENDING_ADDRESS = "xaman";

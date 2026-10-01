@@ -38,13 +38,13 @@ export const walletLoginFn = createServerFn({ method: "POST" })
 export const xamanStartFn = createServerFn({ method: "POST" })
   .inputValidator((d) => XamanStartSchema.parse(d))
   .handler(async ({ data }) => {
-    const { createXamanSignIn } = await import("@/lib/chains/modules/xrpl/events/login/action");
+    const { createXamanSignIn } = await import("@/lib/chains/modules/xrpl/server/events/login/action");
     return createXamanSignIn(data.message, data.token);
   });
 
 export const xamanStatusFn = createServerFn({ method: "POST" })
   .inputValidator((d) => XamanStatusSchema.parse(d))
   .handler(async ({ data }) => {
-    const { getXamanStatus } = await import("@/lib/chains/modules/xrpl/events/login/action");
+    const { getXamanStatus } = await import("@/lib/chains/modules/xrpl/server/events/login/action");
     return getXamanStatus(data.uuid);
   });

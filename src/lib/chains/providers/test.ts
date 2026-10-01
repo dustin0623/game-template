@@ -6,9 +6,9 @@ import { deriveKeypair, generateSeed, sign, deriveAddress } from "ripple-keypair
 // signatures so the SDK-based verifier can be checked against a known-good
 // implementation. Application code never imports it.
 import { PrivateKey, cryptoUtils } from "@hiveio/dhive";
-import { verifySolanaSignature } from "@/lib/chains/modules/solana";
-import { verifyXrplSignature } from "@/lib/chains/modules/xrpl";
-import { recoverHivePublicKey } from "@/lib/chains/modules/hive";
+import { verifySolanaSignature } from "@/lib/chains/modules/solana/server";
+import { verifyXrplSignature } from "@/lib/chains/modules/xrpl/server";
+import { recoverHivePublicKey } from "@/lib/chains/modules/hive/server";
 import { hashPassword, verifyPassword } from "./email/password";
 import { createChallenge, consumeChallenge } from "./challenge.server";
 
