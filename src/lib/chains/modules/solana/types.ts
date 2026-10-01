@@ -20,9 +20,6 @@ export const QuantitySchema = z.string().regex(/^\d+(\.\d+)?$/, "Quantity must b
 
 export const MetadataSchema = z.record(z.string(), z.unknown()).nullable().optional();
 
-/** Who signs: the user's browser wallet, or the server treasury key. */
-export const SolanaSignerSchema = z.enum(["wallet", "server"]);
-export type SolanaSigner = z.infer<typeof SolanaSignerSchema>;
 
 /** Native SOL has 9 decimals (1 SOL = 1_000_000_000 lamports). */
 export const LAMPORTS_PER_SOL = 1_000_000_000;

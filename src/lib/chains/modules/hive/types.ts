@@ -20,10 +20,6 @@ export const TransactionIdSchema = z.string().trim().regex(/^[0-9a-f]{40}$/i, "I
 
 export const MetadataSchema = z.record(z.string(), z.unknown()).nullable().optional();
 
-/** Who signs: the user's browser wallet, or the server treasury account. */
-export const SignerSchema = z.enum(["keychain", "server"]);
-
-export type HiveSigner = z.infer<typeof SignerSchema>;
 
 /** Uniform result shape for every Hive chain event. */
 export type HiveActionResult<T> = { ok: true; data: T } | { ok: false; error: string; code?: string };
