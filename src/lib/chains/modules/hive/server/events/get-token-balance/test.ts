@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { getTokenBalance } from "./action";
-import type { HiveClient } from "../../client";
+import type { HiveClient } from "../../../client";
 
 function mockClient(overrides: Record<string, unknown> = {}) {
   return {

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getHiveClient, type HiveClient } from "../../client";
+import { getHiveClient, type HiveClient } from "../../../client";
 import {
   HiveAccountSchema,
   SymbolSchema,
@@ -8,7 +8,7 @@ import {
   ok,
   fail,
   type HiveActionResult,
-} from "../../types";
+} from "../../../types";
 import type { PaymentValidationResult, PaymentExpectation } from "hivexph-sdk";
 
 export const ValidatePaymentInput = z.object({

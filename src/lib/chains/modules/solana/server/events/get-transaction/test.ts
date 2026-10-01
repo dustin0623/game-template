@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { getTransaction } from "./action";
-import type { SolanaClient } from "../../client";
+import type { SolanaClient } from "../../../client";
 
 const SIG =
   "5h4nJ1vT7Xq8sV9m2QpZ3rLbYwCdE6fGhJkMnPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLm";

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { getTransaction } from "./action";
-import type { HiveClient } from "../../client";
+import type { HiveClient } from "../../../client";
 
 const TXID = "7b064a84a968caddd2496f3270f0cecafb954217";
 

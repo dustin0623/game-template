@@ -1,12 +1,12 @@
 import { z } from "zod";
-import { getSolanaClient, type SolanaClient } from "../../client";
+import { getSolanaClient, type SolanaClient } from "../../../client";
 import {
   SolanaSignatureSchema,
   fromBaseUnits,
   ok,
   fail,
   type SolanaActionResult,
-} from "../../types";
+} from "../../../types";
 
 export const GetTransactionInput = z.object({
   signature: SolanaSignatureSchema,

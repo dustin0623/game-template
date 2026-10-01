@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { getTokenBalance } from "./action";
-import type { SolanaClient } from "../../client";
+import type { SolanaClient } from "../../../client";
 
 const OWNER = "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM";
 const MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";

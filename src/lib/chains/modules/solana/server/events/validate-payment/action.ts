@@ -6,7 +6,7 @@
  * The transaction worker MUST call this before crediting a deposit.
  */
 import { z } from "zod";
-import { getSolanaClient, type SolanaClient } from "../../client";
+import { getSolanaClient, type SolanaClient } from "../../../client";
 import {
   SolanaAddressSchema,
   SolanaSignatureSchema,
@@ -15,7 +15,7 @@ import {
   ok,
   fail,
   type SolanaActionResult,
-} from "../../types";
+} from "../../../types";
 import { getTransaction, type SolanaTransfer } from "../get-transaction/action";
 
 export const ValidatePaymentInput = z.object({

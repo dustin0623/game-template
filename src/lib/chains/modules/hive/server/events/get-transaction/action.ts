@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { getHiveClient, type HiveClient } from "../../client";
-import { TransactionIdSchema, ok, fail, type HiveActionResult } from "../../types";
+import { getHiveClient, type HiveClient } from "../../../client";
+import { TransactionIdSchema, ok, fail, type HiveActionResult } from "../../../types";
 import type { TransactionResult } from "hivexph-sdk";
 
 export const GetTransactionInput = z.object({

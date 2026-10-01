@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { getHiveClient, type HiveClient } from "../../client";
-import { hiveChainConfig } from "../../../config";
-import { HiveAccountSchema, MetadataSchema, ok, fail, type HiveActionResult } from "../../types";
+import { getHiveClient, type HiveClient } from "../../../client";
+import { hiveChainConfig } from "../../../../config";
+import { HiveAccountSchema, MetadataSchema, ok, fail, type HiveActionResult } from "../../../types";
 
 export const BroadcastCustomJsonInput = z.object({
   /** Hive account signing in the browser via Keychain. */

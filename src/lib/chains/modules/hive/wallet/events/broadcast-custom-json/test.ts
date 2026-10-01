@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { broadcastCustomJson } from "./action";
-import { hiveChainConfig } from "../../../config";
-import type { HiveClient } from "../../client";
+import { hiveChainConfig } from "../../../../config";
+import type { HiveClient } from "../../../client";
 
 function mockClient(available = true) {
   const customJson = vi.fn().mockResolvedValue({ success: true, transactionId: "tx-cj", raw: {} });

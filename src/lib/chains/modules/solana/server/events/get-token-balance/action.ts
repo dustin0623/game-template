@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { PublicKey } from "@solana/web3.js";
-import { getSolanaClient, type SolanaClient } from "../../client";
+import { getSolanaClient, type SolanaClient } from "../../../client";
 import {
   SolanaAddressSchema,
   SolanaSymbolSchema,
@@ -9,7 +9,7 @@ import {
   ok,
   fail,
   type SolanaActionResult,
-} from "../../types";
+} from "../../../types";
 
 export const GetTokenBalanceInput = z.object({
   /** Wallet address to read. */
