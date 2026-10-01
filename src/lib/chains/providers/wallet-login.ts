@@ -1,6 +1,6 @@
 import { config } from "@/lib/config/config";
 import type { WalletLogin } from "@/features/types/auth.types";
-import { playerRepository, toPlayer } from "@/lib/database/mock/repositories/player.repository";
+import { playerRepository, toPlayer } from "@/lib/modules/players/server.repository";
 import { consumeChallenge } from "./challenge.server";
 import { verify as verifySolana } from "./solana/verify";
 import { verify as verifyHive } from "./hive/verify";
